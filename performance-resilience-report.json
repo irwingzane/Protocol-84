@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-02-18T12:15:23.159Z",
+  "metrics": {
+    "totalEmployees": 1,
+    "avgCompletion": 100,
+    "engagedRate": 100,
+    "burnoutRiskDelta": -20,
+    "projectedPerformanceGain": 35,
+    "projectedStressReduction": 28,
+    "projectedProductivityGain": 22
+  },
+  "employees": [
+    {
+      "role": "employee",
+      "companyCode": "DEMO",
+      "email": "employee@demo.com",
+      "name": "employee",
+      "weeksCompleted": 12,
+      "lastActivity": "2026-02-18T11:44:21.703Z"
+    }
+  ]
+}

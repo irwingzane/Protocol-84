@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Protocol84 | Employee &amp; Admin Portal</title>
+    <meta
+      name="description"
+      content="Secure portals for employees and administrators to access the Protocol84 performance and resilience programme."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./app.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page-shell app-shell">
+      <header class="site-header app-header">
+        <div class="container header-inner app-header-inner">
+          <div class="logo">
+            <img class="logo-image" src="./logo.PNG" alt="Protocol84" />
+          </div>
+          <div class="app-header-right">
+            <div id="accessStatus" class="access-status-badge" aria-live="polite"></div>
+            <button class="btn btn-ghost btn-sm" id="backToMarketing">Back to site</button>
+            <button class="btn btn-secondary btn-sm" id="logoutButton" hidden>Log out</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <section class="app-view app-view-login" data-view="login">
+          <div class="container app-auth-grid">
+            <div class="app-auth-copy reveal-on-scroll">
+              <p class="eyebrow">Secure access</p>
+              <h1>Sign in to your portal.</h1>
+              <p class="section-subtitle">
+                Employees follow their 12-week performance and resilience journey and, beyond that, access an on-demand
+                content library with training splits, plans, and nutrition guidance aligned to their goals. Admins track
+                engagement, completion, and outcomes across the organisation.
+              </p>
+              <div class="app-auth-benefits">
+                <div>
+                  <h3>For employees</h3>
+                  <ul>
+                    <li>Structured 12-week journey with clear weekly focus</li>
+                    <li>On-demand content for workouts, habits, stress, and nutrition</li>
+                    <li>Progress tracking and completion badges</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3>For admins</h3>
+                  <ul>
+                    <li>Engagement and completion analytics by employee</li>
+                    <li>Programme adoption and burnout risk indicators</li>
+                    <li>Exportable monthly reports (MVP placeholder)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="card app-auth-card reveal-on-scroll" aria-labelledby="loginTabs">
+              <div class="login-tabs" id="loginTabs" role="tablist">
+                <button class="login-tab login-tab-active" data-role-tab="employee" role="tab" aria-selected="true" aria-controls="employeeLoginPanel">Employee</button>
+                <button class="login-tab" data-role-tab="admin" role="tab" aria-selected="false" aria-controls="adminLoginPanel">Company admin</button>
+              </div>
+
+              <div class="login-panel" id="employeeLoginPanel" role="tabpanel">
+                <form id="employeeLoginForm">
+                  <div class="form-row">
+                    <label for="employeeCompanyCode">Company access code</label>
+                    <input id="employeeCompanyCode" name="companyCode" type="text" autocomplete="organization" placeholder="E.g. YOURCOMPANY (optional for now)" />
+                  </div>
+                  <div class="form-row">
+                    <label for="employeeEmail">Work email</label>
+                    <input id="employeeEmail" name="email" type="email" autocomplete="email" placeholder="you@company.com (optional for now)" />
+                  </div>
+                  <div class="form-row">
+                    <label for="employeeName">Your name</label>
+                    <input id="employeeName" name="name" type="text" autocomplete="name" placeholder="Optional for MVP" />
+                  </div>
+                  <p class="form-footnote">For this MVP, any company code and work email will create a test employee profile tied to this browser.</p>
+                  <div class="form-row">
+                    <button class="btn btn-primary btn-full" type="submit">Continue as employee</button>
+                  </div>
+                  <p class="form-footnote" id="employeeLoginStatus" aria-live="polite"></p>
+                </form>
+              </div>
+
+              <div class="login-panel login-panel-hidden" id="adminLoginPanel" role="tabpanel" hidden>
+                <form id="adminLoginForm">
+                  <div class="form-row">
+                    <label for="adminEmail">Admin email</label>
+                    <input id="adminEmail" name="email" type="email" autocomplete="email" placeholder="admin@company.com (optional for now)" />
+                  </div>
+                  <div class="form-row">
+                    <label for="adminAccessCode">Company access code</label>
+                    <input id="adminAccessCode" name="companyCode" type="text" autocomplete="organization" placeholder="E.g. YOURCOMPANY (optional for now)" />
+                  </div>
+                  <p class="form-footnote">In a production system, admins authenticate via SSO or secure credentials. This MVP uses a simplified access code model for demonstration.</p>
+                  <div class="form-row">
+                    <button class="btn btn-secondary btn-full" type="submit">Continue as admin</button>
+                  </div>
+                  <p class="form-footnote" id="adminLoginStatus" aria-live="polite"></p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="app-view app-view-dashboard" data-view="employee" hidden>
+          <div class="container app-dashboard-grid">
+            <aside class="app-sidebar reveal-on-scroll" aria-label="Employee navigation">
+              <div class="app-user-block" id="employeeUserBlock"></div>
+              <nav class="app-nav">
+                <button class="app-nav-item app-nav-item-active" data-employee-section="overview">Overview</button>
+                <button class="app-nav-item" data-employee-section="journey">12-week journey</button>
+                <button class="app-nav-item" data-employee-section="library">Content library</button>
+                <button class="app-nav-item" data-employee-section="training">On Demand Training</button>
+                <button class="app-nav-item" data-employee-section="mental-health">Mental Health Hub</button>
+                <button class="app-nav-item" data-employee-section="newsletter">Zane's Newsletter</button>
+              </nav>
+              <button type="button" class="sidebar-protocol-btn" data-employee-section="protocol" aria-label="Open Protocol AI assistant">
+                <span class="sidebar-protocol-btn-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4z" fill="url(#protocol-robot-a)"/>
+                    <path d="M6 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8z" fill="url(#protocol-robot-b)"/>
+                    <circle cx="9" cy="12" r="1.25" fill="#f9fafb"/>
+                    <circle cx="15" cy="12" r="1.25" fill="#f9fafb"/>
+                    <path d="M9 16h6" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/>
+                    <defs>
+                      <linearGradient id="protocol-robot-a" x1="6" y1="2" x2="14" y2="8" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#2563eb"/>
+                        <stop offset="1" stop-color="#8b5cf6"/>
+                      </linearGradient>
+                      <linearGradient id="protocol-robot-b" x1="6" y1="8" x2="18" y2="16" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#3b82f6"/>
+                        <stop offset="1" stop-color="#a78bfa"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </span>
+                <span class="sidebar-protocol-btn-label">Protocol</span>
+                <span class="sidebar-protocol-btn-desc">AI assistant for fitness &amp; lifestyle questions</span>
+              </button>
+              <div class="app-sidebar-footer">
+                <p>Need help?</p>
+                <p class="sidebar-footnote">Contact your HR or People team for support.</p>
+              </div>
+            </aside>
+
+            <div class="app-dashboard-main reveal-on-scroll">
+              <section class="employee-section" data-employee-section-view="overview">
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Employee dashboard</p>
+                    <h2 id="employeeWelcomeTitle">Welcome back.</h2>
+                    <p class="section-subtitle">
+                      Track your progress through the programme, access this week's performance and resilience focus, and
+                      explore longer-term training and nutrition tracks that extend beyond 12 weeks.
+                    </p>
+                  </div>
+                  <div class="progress-pill" id="employeeProgressPill"></div>
+                </header>
+
+                <div class="overview-grid">
+                  <article class="card overview-progress-card reveal-on-scroll">
+                    <h3>Your 12-week journey</h3>
+                    <p class="section-subtitle">Complete modules each week to unlock new content and build durable performance habits.</p>
+                    <div class="progress-bar">
+                      <div class="progress-bar-inner" id="employeeProgressBar"></div>
+                    </div>
+                    <div class="progress-bar-meta" id="employeeProgressMeta"></div>
+                    <button class="btn btn-primary btn-full" id="markWeekCompleteButton">Mark current week as completed</button>
+                    <p class="form-footnote">This button simulates programme completion in the MVP. In production, completion is tied to module usage and assessments.</p>
+                  </article>
+                  <article class="card overview-current-week-card reveal-on-scroll">
+                    <h3>This week's focus</h3>
+                    <ul class="current-week-list" id="employeeCurrentWeekList"></ul>
+                  </article>
+                  <article class="card overview-badges-card reveal-on-scroll">
+                    <h3>Completion badges</h3>
+                    <div class="badge-grid" id="employeeBadges"></div>
+                    <p class="form-footnote">Badges are illustrative for the MVP and can be extended into certificates and shareable milestones.</p>
+                  </article>
+                </div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="journey" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Programme structure</p>
+                    <h2>Your 12-week performance &amp; resilience journey.</h2>
+                    <p class="section-subtitle">Each week combines movement, habits, stress management, productivity, and nutrition in a practical, time-efficient format.</p>
+                  </div>
+                </header>
+                <div class="journey-grid" id="employeeJourneyGrid"></div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="library" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Content library</p>
+                    <h2>All content in one place.</h2>
+                    <p class="section-subtitle">Discover on-demand sessions and tools aligned to movement, resilience, stress, and nutrition.</p>
+                  </div>
+                </header>
+                <div class="library-hub-buttons">
+                  <button type="button" class="library-hub-button library-hub-button-primary" data-employee-section="training">
+                    <span class="library-hub-button-title">On Demand Training plans</span>
+                    <span class="library-hub-button-meta">Workouts, strength &amp; conditioning, mobility</span>
+                  </button>
+                  <button type="button" class="library-hub-button library-hub-button-secondary" data-employee-section="mental-health">
+                    <span class="library-hub-button-title">Mental Health Hub</span>
+                    <span class="library-hub-button-meta">Stress, mindfulness, resilience &amp; habits</span>
+                  </button>
+                  <button type="button" class="library-hub-button library-hub-button-tertiary" data-employee-section="newsletter">
+                    <span class="library-hub-button-title">Zane's Newsletter</span>
+                    <span class="library-hub-button-meta">Monthly newsletter providing science-based updates in the world of fitness</span>
+                  </button>
+                </div>
+                <div class="library-grid" id="employeeLibraryGrid"></div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="training" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">On Demand Training</p>
+                    <h2>Training plans &amp; workouts.</h2>
+                    <p class="section-subtitle">Access workouts, strength and conditioning, and mobility sessions on demand.</p>
+                  </div>
+                </header>
+                <div class="library-grid" id="employeeTrainingGrid"></div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="mental-health" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Mental Health Hub</p>
+                    <h2>Stress, mindfulness &amp; resilience.</h2>
+                    <p class="section-subtitle">Tools and sessions for stress management, mindfulness, and building mental resilience.</p>
+                  </div>
+                </header>
+                <div class="library-grid" id="employeeMentalHealthGrid"></div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="newsletter" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Zane's Newsletter</p>
+                    <h2>Science-based fitness updates.</h2>
+                    <p class="section-subtitle">Monthly newsletter with evidence-informed updates on training, nutrition, and recovery.</p>
+                  </div>
+                </header>
+                <div class="library-grid" id="employeeNewsletterGrid"></div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="protocol" hidden>
+                <header class="dashboard-header protocol-view-header">
+                  <div>
+                    <p class="eyebrow">Protocol</p>
+                    <h2>Your AI fitness &amp; lifestyle assistant.</h2>
+                    <p class="section-subtitle">Ask any question about fitness, nutrition, or tailoring your programme to your lifestyle. AI integration coming soon.</p>
+                  </div>
+                </header>
+                <div class="protocol-ai-placeholder" aria-label="Protocol AI chat area">
+                  <p class="protocol-ai-placeholder-text">AI chat will appear here once integrated.</p>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <section class="app-view app-view-dashboard" data-view="admin" hidden>
+          <div class="container app-dashboard-grid">
+            <aside class="app-sidebar reveal-on-scroll" aria-label="Admin navigation">
+              <div class="app-user-block" id="adminUserBlock"></div>
+              <nav class="app-nav">
+                <button class="app-nav-item app-nav-item-active" data-admin-section="analytics">Organisation overview</button>
+                <button class="app-nav-item" data-admin-section="employees">Employees</button>
+                <button class="app-nav-item" data-admin-section="reports">Reports</button>
+              </nav>
+              <div class="app-sidebar-footer">
+                <p>Admin access</p>
+                <p class="sidebar-footnote">For production use, integrate with SSO and your HRIS to manage users automatically.</p>
+              </div>
+            </aside>
+
+            <div class="app-dashboard-main reveal-on-scroll">
+              <section class="admin-section" data-admin-section-view="analytics">
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Admin dashboard</p>
+                    <h2>Engagement &amp; completion across your organisation.</h2>
+                    <p class="section-subtitle">Understand how employees are using the programme and where to focus communication and support.</p>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" id="simulateActivityButton">Simulate additional engagement</button>
+                </header>
+                <div class="admin-hero-card-wrapper" id="adminHeroCardWrapper">
+                  <div class="hero-card admin-dashboard-hero-card" id="adminHeroCard">
+                    <div class="hero-card-header">
+                      <p>Organisation Resilience Snapshot</p>
+                      <span class="badge badge-success">Live</span>
+                    </div>
+                    <div class="hero-card-body">
+                      <div class="hero-metrics-grid" id="adminHeroMetricsGrid"></div>
+                      <div class="hero-mini-chart" id="adminHeroChart" aria-hidden="true" aria-label="Engagement growth trend"></div>
+                      <p class="hero-card-footer">Give your people a clear path to better performance, not another one-off wellness initiative.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="admin-metrics-grid" id="adminMetricsGrid"></div>
+              </section>
+
+              <section class="admin-section" data-admin-section-view="employees" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Employees</p>
+                    <h2>Programme participation by employee.</h2>
+                    <p class="section-subtitle">View completion rates and last activity across your enrolled population. For the MVP, data is limited to this browser.</p>
+                  </div>
+                </header>
+                <div class="card reveal-on-scroll">
+                  <div class="table-wrapper">
+                    <table class="data-table" aria-label="Employee progress table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Employee</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Weeks completed</th>
+                          <th scope="col">Completion</th>
+                          <th scope="col">Last activity</th>
+                        </tr>
+                      </thead>
+                      <tbody id="adminEmployeeTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+
+              <section class="admin-section" data-admin-section-view="reports" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Reports</p>
+                    <h2>Monthly summary reports.</h2>
+                    <p class="section-subtitle">Export anonymised engagement and completion summaries on a monthly basis. This MVP generates a structured JSON summary for download.</p>
+                  </div>
+                </header>
+                <div class="card reveal-on-scroll">
+                  <p>Click the button below to generate a JSON representation of your current engagement metrics for demonstration purposes.</p>
+                  <button class="btn btn-primary" id="downloadReportButton">Download sample report (JSON)</button>
+                  <p class="form-footnote" id="reportStatus"></p>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

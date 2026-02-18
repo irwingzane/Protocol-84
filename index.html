@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Performance &amp; Resilience Platform | Protocol84</title>
+    <meta
+      name="description"
+      content="A science-based 12-week employee performance and resilience programme delivered as an enterprise-ready SaaS benefit."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="loading-screen" id="loadingScreen" aria-live="polite" aria-label="Loading">
+      <img class="loading-screen-logo" src="./logo.PNG" alt="" />
+    </div>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="container header-inner">
+          <div class="logo">
+            <img class="logo-image" src="./logo.PNG" alt="Protocol84" />
+          </div>
+          <nav class="main-nav" aria-label="Primary navigation">
+            <a href="#how-it-works">How it works</a>
+            <a href="#programme">Programme</a>
+            <a href="#benefits">Benefits</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+            aria-controls="mobileNav"
+          >
+            <span></span>
+            <span></span>
+          </button>
+          <div class="header-ctas">
+            <button class="btn btn-ghost" data-scroll-to="#pricing">See pricing</button>
+            <a class="btn btn-primary" href="./app.html">Login</a>
+          </div>
+        </div>
+        <nav class="mobile-nav" id="mobileNav" aria-label="Primary navigation" hidden>
+          <a href="#how-it-works" data-mobile-nav-link>How it works</a>
+          <a href="#programme" data-mobile-nav-link>Programme</a>
+          <a href="#benefits" data-mobile-nav-link>Benefits</a>
+          <a href="#pricing" data-mobile-nav-link>Pricing</a>
+          <a href="#about" data-mobile-nav-link>About</a>
+          <a href="#contact" data-mobile-nav-link>Contact</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="section hero" id="top">
+          <div class="container hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">Enterprise Employee Performance Platform</p>
+              <h1>Improve Employee Performance, Resilience, and Wellbeing.</h1>
+              <p class="hero-subtitle">
+                Science-based, structured 12-week programme delivered as an employee benefit, with an integrated AI tool
+                to help answer fitness questions on demand. Built for HR and People leaders in modern organisations.
+              </p>
+              <div class="hero-ctas">
+                <button class="btn btn-primary" data-scroll-to="#contact">Book a demo</button>
+                <button class="btn btn-secondary" data-scroll-to="#contact">Contact us</button>
+                <button class="btn btn-ghost" data-scroll-to="#pricing">See pricing</button>
+              </div>
+              <div class="hero-highlights">
+                <div>
+                  <p class="hero-metric">12-week</p>
+                  <p class="hero-metric-label">Structured programme</p>
+                </div>
+                <div>
+                  <p class="hero-metric">Global</p>
+                  <p class="hero-metric-label">Remote-ready delivery</p>
+                </div>
+                <div>
+                  <p class="hero-metric">Science-based</p>
+                  <p class="hero-metric-label">Performance &amp; resilience</p>
+                </div>
+              </div>
+            </div>
+            <div class="hero-visual reveal-on-scroll">
+              <div class="hero-card">
+                <div class="hero-card-header">
+                  <p>Team Resilience Snapshot</p>
+                  <span class="badge badge-success">Live</span>
+                </div>
+                <div class="hero-card-body">
+                  <div class="hero-metrics-grid">
+                    <div class="metric-card">
+                      <p class="metric-label">Programme engagement</p>
+                      <p class="metric-value">82%</p>
+                      <div class="metric-trend metric-trend-up">+14% vs last month</div>
+                    </div>
+                    <div class="metric-card">
+                      <p class="metric-label">Burnout risk</p>
+                      <p class="metric-value">-23%</p>
+                      <div class="metric-trend metric-trend-down">Improving</div>
+                    </div>
+                    <div class="metric-card">
+                      <p class="metric-label">Productivity index</p>
+                      <p class="metric-value">+18%</p>
+                      <div class="metric-trend metric-trend-up">After 12 weeks</div>
+                    </div>
+                  </div>
+                  <div class="hero-mini-chart">
+                    <div class="hero-mini-chart-bar hero-mini-chart-bar-1"></div>
+                    <div class="hero-mini-chart-bar hero-mini-chart-bar-2"></div>
+                    <div class="hero-mini-chart-bar hero-mini-chart-bar-3"></div>
+                    <div class="hero-mini-chart-bar hero-mini-chart-bar-4"></div>
+                  </div>
+                  <p class="hero-card-footer">
+                    Give your people a clear path to better performance, not another one-off wellness initiative.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section alt reveal-on-scroll" id="how-it-works">
+          <div class="container section-header">
+            <p class="eyebrow">How it works</p>
+            <h2>Low-friction rollout. Measurable outcomes.</h2>
+            <p class="section-subtitle">
+              A simple deployment model designed for HR, Talent, and People teams to implement within weeks, not months.
+            </p>
+          </div>
+          <div class="container steps-grid">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <h3>Company signs up</h3>
+              <p>
+                Select your tier, confirm employee numbers, and choose your launch date. We configure your branded portal
+                and onboarding materials.
+              </p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <h3>Employees get access</h3>
+              <p>
+                Employees receive secure login details and a clear, structured weekly path. No app downloads required.
+              </p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <h3>Employees follow the programme</h3>
+              <p>
+                A 12-week performance and resilience journey combining training, habits, stress management, and nutrition.
+              </p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <h3>Leadership receives reports</h3>
+              <p>
+                Detailed engagement and completion data, plus high-level performance and resilience insights by team and
+                location.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="programme">
+          <div class="container section-header">
+            <p class="eyebrow">Programme &amp; features</p>
+            <h2>A complete performance and resilience system in one platform.</h2>
+            <p class="section-subtitle">
+              Built from proven training, behavioural science, and performance frameworks—without the noise.
+            </p>
+            <p class="section-subtitle">
+              Beyond the structured 12-week journey, employees can access on-demand training splits, long-term plans, and
+              nutrition guides aligned to their specific performance, resilience, or body-composition goals.
+            </p>
+          </div>
+          <div class="container features-grid">
+            <article class="feature-card reveal-on-scroll">
+              <h3>Structured 12-week journey</h3>
+              <p>
+                A clear week-by-week pathway guiding employees from baseline assessment through to sustainable high
+                performance.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Pre-recorded workouts</h3>
+              <p>
+                Time-efficient sessions designed for busy professionals. Accessible in-office, at home, or on the road.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Gym training programmes</h3>
+              <p>
+                Progressive training tracks aligned with performance, energy, and resilience outcomes—not aesthetics.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Goal-based training splits</h3>
+              <p>
+                On-demand strength, performance, and conditioning splits that employees can follow beyond 12 weeks,
+                tailored to different schedules and objectives.
+              </p>
+            </article>
+            <article class="feature-card feature-card-highlight reveal-on-scroll">
+              <h3>Monthly science updates</h3>
+              <p>
+                Ongoing content updates aligned with current research to keep your programme relevant and effective.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Discipline &amp; habit system</h3>
+              <p>
+                Structured habits and accountability tools that help employees actually follow through over 12 weeks.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Stress management routines</h3>
+              <p>
+                Practical, short interventions that employees can use before key meetings, deadlines, and high-pressure
+                periods.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Productivity &amp; performance</h3>
+              <p>
+                Weekly modules on focus, prioritisation, and execution so employees can convert energy into output.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Nutrition guidance</h3>
+              <p>
+                Evidence-based frameworks for fuelling performance, improving recovery, and supporting cognitive function,
+                with guides that adapt to differing goals and preferences.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Integrated AI fitness assistant</h3>
+              <p>
+                An in-app AI tool that answers fitness, nutrition, and programme questions so employees get instant,
+                evidence-based guidance whenever they need it.
+              </p>
+            </article>
+            <article class="feature-card reveal-on-scroll">
+              <h3>Mental resilience training</h3>
+              <p>
+                Tools to manage setbacks, maintain composure, and build confidence in high-stakes environments.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section alt reveal-on-scroll" id="benefits">
+          <div class="container section-header">
+            <p class="eyebrow">Corporate benefits</p>
+            <h2>From burnout risk to sustainable high performance.</h2>
+            <p class="section-subtitle">
+              Position performance, wellbeing, and resilience as a strategic advantage—not just a wellness initiative.
+            </p>
+          </div>
+          <div class="container benefits-grid">
+            <div class="benefits-copy">
+              <ul class="benefits-list">
+                <li>
+                  <h3>Reduced employee burnout</h3>
+                  <p>
+                    Equip teams with practical tools to manage workload, stress, and recovery—reducing burnout and
+                    absence.
+                  </p>
+                </li>
+                <li>
+                  <h3>Increased productivity</h3>
+                  <p>
+                    Combine physical readiness, focus, and execution frameworks to drive measurable improvement in output.
+                  </p>
+                </li>
+                <li>
+                  <h3>Higher engagement &amp; retention</h3>
+                  <p>
+                    Signal genuine investment in employee performance and wellbeing with a benefit that goes beyond surface
+                    perks.
+                  </p>
+                </li>
+              </ul>
+              <div class="benefits-cta">
+                <button class="btn btn-primary" data-scroll-to="#contact">Book a demo</button>
+                <button class="btn btn-secondary" data-scroll-to="#pricing">View pricing</button>
+              </div>
+            </div>
+            <div class="benefits-visual">
+              <div class="benefits-chart-card">
+                <div class="benefits-chart-header">
+                  <h3>Impact over 12 weeks</h3>
+                  <span class="badge">Illustrative data</span>
+                </div>
+                <div class="benefits-chart">
+                  <div class="chart-row">
+                    <span>Burnout risk</span>
+                    <div class="chart-bar">
+                      <div class="chart-bar-inner chart-bar-negative" style="width: 40%"></div>
+                    </div>
+                    <span class="chart-value">-23%</span>
+                  </div>
+                  <div class="chart-row">
+                    <span>Productivity</span>
+                    <div class="chart-bar">
+                      <div class="chart-bar-inner chart-bar-positive" style="width: 32%"></div>
+                    </div>
+                    <span class="chart-value">+18%</span>
+                  </div>
+                  <div class="chart-row">
+                    <span>Engagement</span>
+                    <div class="chart-bar">
+                      <div class="chart-bar-inner chart-bar-positive" style="width: 45%"></div>
+                    </div>
+                    <span class="chart-value">+27%</span>
+                  </div>
+                </div>
+                <p class="benefits-footnote">
+                  Data shown for illustration. Actual analytics are generated from your organisation's anonymised
+                  engagement and completion metrics.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="pricing">
+          <div class="container section-header">
+            <p class="eyebrow">Pricing</p>
+            <h2>Simple, transparent per-employee pricing.</h2>
+            <p class="section-subtitle">
+              Scale from small teams to global organisations with predictable costs and volume-based discounts.
+            </p>
+          </div>
+          <div class="container pricing-grid">
+            <article class="pricing-card reveal-on-scroll">
+              <h3>Small</h3>
+              <p class="pricing-label">Up to 25 employees</p>
+              <p class="pricing-price">£10.99 / employee / month</p>
+              <ul class="pricing-features">
+                <li>Full 12-week programme access</li>
+                <li>Employee progress dashboards</li>
+                <li>Email support</li>
+              </ul>
+              <button class="btn btn-primary" data-purchase-tier="small">Purchase access</button>
+              <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
+            </article>
+            <article class="pricing-card pricing-card-featured reveal-on-scroll">
+              <div class="pricing-badge">Most popular</div>
+              <h3>Medium</h3>
+              <p class="pricing-label">Up to 100 employees</p>
+              <p class="pricing-price">£6.99 / employee / month</p>
+              <ul class="pricing-features">
+                <li>Everything in Small</li>
+                <li>Manager engagement insights</li>
+                <li>Quarterly leadership review</li>
+              </ul>
+              <button class="btn btn-primary" data-purchase-tier="medium">Purchase access</button>
+              <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
+            </article>
+            <article class="pricing-card reveal-on-scroll">
+              <h3>Enterprise</h3>
+              <p class="pricing-label">100+ employees</p>
+              <p class="pricing-price">Custom pricing</p>
+              <ul class="pricing-features">
+                <li>Dedicated customer success</li>
+                <li>Advanced reporting &amp; exports</li>
+                <li>Global rollout support</li>
+              </ul>
+              <button class="btn btn-primary" data-scroll-to="#contact">Talk to sales</button>
+              <p class="pricing-footnote">
+                Volume discounts, multi-year agreements, and regional pricing available.
+              </p>
+            </article>
+          </div>
+          <div class="container payment-note">
+            <p>
+              In a production environment, payments are processed securely via your preferred payment gateway (e.g.
+              Stripe). This MVP uses a simulated purchase flow for demonstration.
+            </p>
+          </div>
+        </section>
+
+        <section class="section alt reveal-on-scroll" id="about">
+          <div class="container about-grid">
+            <div>
+              <p class="eyebrow">About the programme</p>
+              <h2>Built at the intersection of sales, performance, and human resilience.</h2>
+              <p class="section-subtitle">
+                Zane Irwing, founder of Protocol84, brings experience across high-performing sales environments,
+                performance coaching, and evidence-based training design.
+              </p>
+              <ul class="about-list">
+                <li>Background in performance-driven commercial roles and leadership.</li>
+                <li>Formal training in strength &amp; conditioning and behaviour change.</li>
+                <li>Programmes informed by current research in physiology and psychology.</li>
+              </ul>
+            </div>
+            <div>
+              <div class="about-card">
+                <h3>Science-backed methodology</h3>
+                <ul class="about-methodology">
+                  <li>Evidence-informed training and recovery protocols.</li>
+                  <li>Habit design principles to support long-term behaviour change.</li>
+                  <li>Resilience and stress-management frameworks tested in real teams.</li>
+                </ul>
+                <div class="about-certifications">
+                  <p class="about-cert-title">Certifications &amp; credentials (placeholders)</p>
+                  <ul>
+                    <li>Strength &amp; Conditioning certification</li>
+                    <li>Nutrition &amp; performance coaching accreditation</li>
+                    <li>Behaviour change and habit design training</li>
+                  </ul>
+                </div>
+                <div class="about-testimonials-placeholder">
+                  <p class="eyebrow">Early feedback</p>
+                  <p>
+                    "This programme gave our team a practical, shared language for performance and resilience. It's
+                    quickly become part of how we work."
+                    <span class="about-testimonial-meta">— Placeholder, VP People, Technology Company</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="contact">
+          <div class="container section-header">
+            <p class="eyebrow">Contact &amp; demo</p>
+            <h2>Book a tailored walk-through for your organisation.</h2>
+            <p class="section-subtitle">
+              Share a few details and we'll schedule a 30–45 minute session focused on your context, teams, and goals.
+            </p>
+          </div>
+          <div class="container contact-grid">
+            <form class="card contact-form reveal-on-scroll" id="demoForm">
+              <div class="form-row">
+                <label for="company">Company name</label>
+                <input id="company" name="company" type="text" required />
+              </div>
+              <div class="form-row">
+                <label for="name">Your name</label>
+                <input id="name" name="name" type="text" required />
+              </div>
+              <div class="form-row two-col">
+                <div>
+                  <label for="email">Work email</label>
+                  <input id="email" name="email" type="email" required />
+                </div>
+                <div>
+                  <label for="employees">Number of employees</label>
+                  <select id="employees" name="employees">
+                    <option value="1-25">1–25</option>
+                    <option value="26-100">26–100</option>
+                    <option value="101-500">101–500</option>
+                    <option value="500+">500+</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <label for="message">What would you like to focus on?</label>
+                <textarea id="message" name="message" rows="4"></textarea>
+              </div>
+              <div class="form-row">
+                <button type="submit" class="btn btn-primary btn-full">Book demo</button>
+              </div>
+              <p class="form-footnote" id="demoFormStatus"></p>
+            </form>
+
+            <div class="contact-info card reveal-on-scroll">
+              <h3>Prefer to contact us directly?</h3>
+              <p>
+                Email: <a href="mailto:hello@protocol84.com">hello@protocol84.com</a><br />
+                Phone: <a href="tel:+447306142153">+44 7306 142153</a>
+              </p>
+              <p>
+                We typically respond within one business day. For enterprise enquiries, we can coordinate across multiple
+                stakeholders and regions.
+              </p>
+              <div class="contact-quick-links">
+                <button class="btn btn-secondary" data-scroll-to="#how-it-works">Review how it works</button>
+                <a class="btn btn-ghost" href="./app.html">Go to login</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div class="footer-left">
+            <div class="logo">
+              <img class="logo-image" src="./logo.PNG" alt="Protocol84" />
+            </div>
+            <p class="footer-copy">
+              Employee performance &amp; resilience platform for modern organisations.
+            </p>
+          </div>
+          <div class="footer-right">
+            <nav class="footer-nav">
+              <a href="#top">Home</a>
+              <a href="#programme">Programme</a>
+              <a href="#pricing">Pricing</a>
+              <a href="#contact">Contact</a>
+            </nav>
+            <p class="footer-meta">
+              &copy; <span id="footerYear"></span> Protocol84. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="module" src="./landing.js"></script>
+  </body>
+</html>
