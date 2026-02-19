@@ -312,9 +312,52 @@
 }
 
 .app-shell[data-theme="light"] .library-hub-button {
-  background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
   color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .library-hub-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.app-shell[data-theme="light"] .library-hub-button-primary {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0.04));
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+.app-shell[data-theme="light"] .library-hub-button-primary:hover {
+  border-color: rgba(37, 99, 235, 0.6);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.2);
+}
+
+.app-shell[data-theme="light"] .library-hub-button-secondary {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(139, 92, 246, 0.04));
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.app-shell[data-theme="light"] .library-hub-button-secondary:hover {
+  border-color: rgba(139, 92, 246, 0.6);
+  box-shadow: 0 12px 28px rgba(139, 92, 246, 0.2);
+}
+
+.app-shell[data-theme="light"] .library-hub-button-tertiary {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(20, 184, 166, 0.04));
+  border-color: rgba(20, 184, 166, 0.4);
+}
+
+.app-shell[data-theme="light"] .library-hub-button-tertiary:hover {
+  border-color: rgba(20, 184, 166, 0.6);
+  box-shadow: 0 12px 28px rgba(20, 184, 166, 0.2);
+}
+
+.app-shell[data-theme="light"] .library-hub-button-quaternary {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(245, 158, 11, 0.04));
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.app-shell[data-theme="light"] .library-hub-button-quaternary:hover {
+  border-color: rgba(245, 158, 11, 0.6);
+  box-shadow: 0 12px 28px rgba(245, 158, 11, 0.2);
 }
 
 .app-shell[data-theme="light"] .library-hub-button-title {
@@ -702,7 +745,6 @@
 }
 
 .app-sidebar-footer {
-  border-top: 1px solid rgba(31, 41, 55, 0.9);
   padding-top: 0.6rem;
   font-size: 0.8rem;
   color: #9ca3af;
@@ -1175,6 +1217,67 @@ button.journey-card-clickable {
   margin-top: 0.35rem;
 }
 
+.content-detail-protocol-cta {
+  grid-column: 1 / -1;
+}
+
+.content-detail-back {
+  margin-bottom: 0.75rem;
+}
+
+.content-detail-pdf-block {
+  min-height: 140px;
+}
+
+.content-detail-pdf-block.content-detail-pdf-list {
+  min-height: 320px;
+}
+
+.content-detail-pdf-block.content-detail-pdf-list .content-detail-pdf-area {
+  min-height: 260px;
+}
+
+.content-detail-pdf-list-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.content-detail-pdf-list-items li a {
+  display: block;
+  padding: 0.6rem 0.75rem;
+  background: rgba(31, 41, 55, 0.6);
+  border-radius: 8px;
+  color: #93c5fd;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.content-detail-pdf-list-items li a:hover {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: rgba(93, 109, 126, 0.9);
+}
+
+.app-shell[data-theme="light"] .content-detail-pdf-list-items li a {
+  background: rgba(243, 244, 246, 0.9);
+  color: #1d4ed8;
+  border-color: rgba(209, 213, 219, 0.9);
+}
+
+.app-shell[data-theme="light"] .content-detail-pdf-list-items li a:hover {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.library-card-clickable {
+  cursor: pointer;
+}
+
 /* Admin: Employee notes list */
 .admin-notes-list {
   padding: 1.25rem;
@@ -1213,7 +1316,7 @@ button.journey-card-clickable {
 
 .library-hub-buttons {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -1266,6 +1369,16 @@ button.journey-card-clickable {
 .library-hub-button-tertiary:hover {
   border-color: rgba(20, 184, 166, 0.6);
   box-shadow: 0 12px 32px rgba(20, 184, 166, 0.2);
+}
+
+.library-hub-button-quaternary {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(15, 23, 42, 0.98));
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.library-hub-button-quaternary:hover {
+  border-color: rgba(245, 158, 11, 0.65);
+  box-shadow: 0 12px 32px rgba(245, 158, 11, 0.2);
 }
 
 .library-hub-button-title {

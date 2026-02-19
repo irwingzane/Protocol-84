@@ -63,6 +63,105 @@ function getAllWeeksContent() {
   return {};
 }
 
+const CONTENT_DETAIL_KEY = 'protocol84_content_detail';
+
+function getContentDetail(section, index) {
+  try {
+    const raw = localStorage.getItem(CONTENT_DETAIL_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    const key = `${section}_${index}`;
+    return all[key] || null;
+  } catch (_) {}
+  return null;
+}
+
+function setContentDetail(section, index, data) {
+  try {
+    const raw = localStorage.getItem(CONTENT_DETAIL_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    const key = `${section}_${index}`;
+    all[key] = { ...(all[key] || {}), ...data };
+    localStorage.setItem(CONTENT_DETAIL_KEY, JSON.stringify(all));
+  } catch (_) {}
+}
+
+const CONTENT_SECTION_LABELS = {
+  library: 'Content library',
+  training: 'On Demand Training',
+  'mental-health': 'Mental Health Hub',
+  newsletter: "Zane's Newsletter",
+  nutrition: 'Nutrition',
+};
+
+const CONTENT_HASH_PREFIX = 'content-';
+
+function getContentFromHash() {
+  const raw = typeof window !== 'undefined' && window.location ? window.location.hash : '';
+  const hash = raw && raw.charAt(0) === '#' ? raw.slice(1) : raw;
+  if (!hash || !hash.startsWith(CONTENT_HASH_PREFIX)) return null;
+  const rest = hash.slice(CONTENT_HASH_PREFIX.length);
+  const dash = rest.indexOf('-');
+  if (dash <= 0) return null;
+  const section = rest.slice(0, dash);
+  const index = parseInt(rest.slice(dash + 1), 10);
+  if (!CONTENT_SECTION_LABELS[section] || !Number.isFinite(index) || index < 0) return null;
+  return { section, index };
+}
+
+function setContentHash(section, index) {
+  if (typeof window === 'undefined' || !window.location) return;
+  const want = `${CONTENT_HASH_PREFIX}${section}-${index}`;
+  if (window.location.hash.slice(1) !== want) window.location.hash = want;
+}
+
+/** Title/meta for each card by section (same order as render grids). Used for URL-driven content detail. */
+const CONTENT_ITEMS = {
+  library: [
+    { title: '20-minute desk reset', meta: 'Guided session • Low impact' },
+    { title: 'Pre-meeting reset', meta: 'Breathing & mental reset • 8 min' },
+    { title: '90-minute execution block', meta: 'Structure & prompts' },
+    { title: 'Designing sustainable routines', meta: 'Short module' },
+    { title: 'Managing setbacks under pressure', meta: 'Mindset tools' },
+  ],
+  training: [
+    { title: 'Full body strength circuit', meta: '40 min • Intermediate' },
+    { title: 'Boxing conditioning basics', meta: '25 min • Beginner' },
+    { title: 'Morning mobility flow', meta: '15 min • All levels' },
+    { title: 'Lower body & core', meta: '35 min • Intermediate' },
+    { title: 'Push Pull, Legs', meta: 'Weekly split • All levels' },
+    { title: 'Upper and lower', meta: '2–4 day split • All levels' },
+    { title: 'Bulking', meta: 'Mass building focus • All levels' },
+    { title: 'Cutting', meta: 'Fat loss & conditioning • All levels' },
+  ],
+  'mental-health': [
+    { title: '5-minute stress reset', meta: 'Breathing & grounding • 5 min' },
+    { title: 'Daily mindfulness', meta: 'Focus & clarity • 12 min' },
+    { title: 'Resilience building blocks', meta: 'Core practices' },
+    { title: 'Habit stacking', meta: 'Sustainable routines' },
+  ],
+  newsletter: [
+    { title: "Subscribe to Zane's Newsletter", meta: 'Monthly science-based fitness updates' },
+    { title: 'Past issues', meta: 'Browse previous editions' },
+  ],
+  nutrition: [
+    { title: 'Fuel for high-output days', meta: 'Guidelines & templates' },
+    { title: 'Post-training nutrition', meta: 'Timing & macros' },
+    { title: 'Meal planning basics', meta: 'Simple structures' },
+    { title: 'Fluid & electrolytes', meta: 'High-sweat scenarios' },
+    { title: 'Supplement guide', meta: 'What to take & when' },
+    { title: 'Cutting meals', meta: 'Calorie deficit & macros' },
+    { title: 'Bulking meals', meta: 'Surplus & muscle support' },
+  ],
+};
+
+function getContentItem(section, index) {
+  const items = CONTENT_ITEMS[section];
+  if (!items || index < 0 || index >= items.length) return null;
+  return items[index];
+}
+
+let currentContentDetail = null;
+
 function getTheme() {
   try {
     const saved = localStorage.getItem(THEME_KEY);
@@ -282,6 +381,7 @@ function showEmployeeDashboard(employeeFromLogin) {
   renderEmployeeTraining();
   renderEmployeeMentalHealth();
   renderEmployeeNewsletter();
+  renderEmployeeNutrition();
 
   const markWeekBtn = document.getElementById('markWeekCompleteButton');
   const undoWeekBtn = document.getElementById('undoWeekCompleteButton');
@@ -332,6 +432,23 @@ function showEmployeeDashboard(employeeFromLogin) {
     if (section) section.dataset.currentWeek = String(weekFromHash);
     switchEmployeeSection('week-detail');
     requestAnimationFrame(() => renderWeekDetail());
+    return;
+  }
+
+  const contentFromHash = getContentFromHash();
+  if (contentFromHash != null) {
+    const item = getContentItem(contentFromHash.section, contentFromHash.index);
+    if (item) {
+      currentContentDetail = {
+        section: contentFromHash.section,
+        index: contentFromHash.index,
+        title: item.title,
+        meta: item.meta,
+        sectionLabel: CONTENT_SECTION_LABELS[contentFromHash.section] || contentFromHash.section,
+      };
+      switchEmployeeSection('content-detail');
+      requestAnimationFrame(() => renderContentDetail());
+    }
   }
 }
 
@@ -348,12 +465,14 @@ function renderEmployeeProgress(employee) {
     progressMeta.textContent = `${employee.weeksCompleted || 0} of ${TOTAL_WEEKS} weeks completed • ${progress}% total`;
   }
   if (pill) {
+    const currentWeek = Math.min((employee.weeksCompleted || 0) + 1, TOTAL_WEEKS);
+    const currentWeekTitle = getWeekTitle(currentWeek);
     pill.textContent =
       progress === 0
-        ? 'Getting started – week 1'
+        ? `Getting started – week 1${currentWeekTitle ? `: ${currentWeekTitle}` : ''}`
         : progress >= 100
         ? 'Programme completed – maintain your habits'
-        : `In progress – week ${Math.min((employee.weeksCompleted || 0) + 1, TOTAL_WEEKS)}`;
+        : `In progress – week ${currentWeek}${currentWeekTitle ? `: ${currentWeekTitle}` : ''}`;
   }
 }
 
@@ -362,17 +481,12 @@ function renderEmployeeCurrentWeek(employee) {
   if (!list) return;
 
   const week = Math.min((employee.weeksCompleted || 0) + 1, TOTAL_WEEKS);
-  const themes = [
-    'Foundation: movement, sleep, and baseline habits.',
-    'Energy: building sustainable routines around your workday.',
-    'Stress: tools to reset quickly between meetings.',
-    'Focus: structuring deep-work blocks and communication.',
-    'Resilience: handling setbacks and high-pressure periods.',
-  ];
-  const theme = themes[(week - 1) % themes.length];
+  const weekTitle = getWeekTitle(week);
+  const weekSubtitle = getWeekSubtitle(week);
 
   list.innerHTML = `
-    <li><strong>Week ${week}</strong> — ${theme}</li>
+    <li><strong>Week ${week} — ${weekTitle}</strong></li>
+    ${weekSubtitle ? `<li>(${weekSubtitle})</li>` : ''}
     <li>3 x short, guided sessions (movement &amp; mobility).</li>
     <li>1 x habit focus with practical prompts.</li>
     <li>On-demand stress reset routine for busy days.</li>
@@ -403,20 +517,31 @@ function renderEmployeeBadges(employee) {
     .join('');
 }
 
-const WEEK_FOCUS = [
-  'Foundations &amp; energy',
-  'Foundations &amp; energy',
-  'Foundations &amp; energy',
-  'Foundations &amp; energy',
-  'Execution &amp; resilience',
-  'Execution &amp; resilience',
-  'Execution &amp; resilience',
-  'Execution &amp; resilience',
-  'Integration &amp; leadership',
-  'Integration &amp; leadership',
-  'Integration &amp; leadership',
-  'Integration &amp; leadership',
+/** Full title and subtitle for each week (1–12). */
+const WEEK_TITLES = [
+  { title: 'Movement Foundations & Fitness Baseline', subtitle: 'Build proper form, assess strength and mobility' },
+  { title: 'Mobility & Posture Correction', subtitle: 'Fix desk posture, joint health, flexibility' },
+  { title: 'Core Strength & Stability', subtitle: 'Spine support, balance, injury prevention' },
+  { title: 'Strength Training Fundamentals', subtitle: 'Compound lifts, technique development' },
+  { title: 'Upper Body Strength Development', subtitle: 'Push/pull strength, shoulder health' },
+  { title: 'Lower Body Power & Stability', subtitle: 'Legs, glutes, knee stability, functional strength' },
+  { title: 'Full-Body Functional Training', subtitle: 'Integrated movement patterns' },
+  { title: 'Muscular Endurance & Work Capacity', subtitle: 'Higher volume training, stamina' },
+  { title: 'Cardiovascular Conditioning & HIIT', subtitle: 'Heart health, metabolic conditioning' },
+  { title: 'Progressive Strength & Performance', subtitle: 'Heavier loads, advanced training methods' },
+  { title: 'Power, Speed & Athletic Movement', subtitle: 'Explosive training, agility, coordination' },
+  { title: 'Performance Testing & Strength Benchmarking', subtitle: 'Re-testing progress and future planning' },
 ];
+
+function getWeekTitle(week) {
+  const w = week >= 1 && week <= TOTAL_WEEKS ? WEEK_TITLES[week - 1] : null;
+  return w ? w.title : '';
+}
+
+function getWeekSubtitle(week) {
+  const w = week >= 1 && week <= TOTAL_WEEKS ? WEEK_TITLES[week - 1] : null;
+  return w ? w.subtitle : '';
+}
 
 function renderEmployeeJourney(employee) {
   const grid = document.getElementById('employeeJourneyGrid');
@@ -435,14 +560,14 @@ function renderEmployeeJourney(employee) {
       statusClass = 'journey-status-current';
       statusLabel = 'Current';
     }
-    const focus = WEEK_FOCUS[week - 1] || 'Performance focus';
+    const weekTitle = getWeekTitle(week);
     cards.push(`
-      <button type="button" class="journey-card journey-card-clickable" data-week="${week}" aria-label="Open week ${week} content">
+      <button type="button" class="journey-card journey-card-clickable" data-week="${week}" aria-label="Open week ${week}: ${weekTitle}">
         <div class="journey-card-header">
           <span class="journey-week-label">Week ${week}</span>
           <span class="journey-status-pill ${statusClass}">${statusLabel}</span>
         </div>
-        <p>Performance focus: ${focus}.</p>
+        <p>${weekTitle || 'Week content'}.</p>
       </button>
     `);
   }
@@ -479,10 +604,11 @@ function renderWeekDetail() {
   const visibleToggle = section.querySelector('#weekDetailNotesVisibleToAdmin') || document.getElementById('weekDetailNotesVisibleToAdmin');
   const saveStatus = section.querySelector('#weekDetailSaveStatus') || document.getElementById('weekDetailSaveStatus');
 
-  const focus = weekLabel <= 4 ? 'Foundations & energy' : weekLabel <= 8 ? 'Execution & resilience' : 'Integration & leadership';
+  const weekTitle = getWeekTitle(weekLabel);
+  const weekSubtitle = getWeekSubtitle(weekLabel);
   if (eyebrow) eyebrow.textContent = `Week ${weekLabel}`;
-  if (title) title.textContent = `Week ${weekLabel}: ${focus}`;
-  if (subtitle) subtitle.textContent = 'Video and resources for this week.';
+  if (title) title.textContent = `Week ${weekLabel} — ${weekTitle}`;
+  if (subtitle) subtitle.textContent = weekSubtitle ? `(${weekSubtitle}) Video and resources for this week.` : 'Video and resources for this week.';
 
   const content = getWeekContent(weekLabel);
 
@@ -614,11 +740,6 @@ function renderEmployeeLibrary() {
       meta: 'Short module',
     },
     {
-      category: 'Nutrition',
-      title: 'Fuel for high-output days',
-      meta: 'Guidelines &amp; templates',
-    },
-    {
       category: 'Resilience',
       title: 'Managing setbacks under pressure',
       meta: 'Mindset tools',
@@ -627,8 +748,8 @@ function renderEmployeeLibrary() {
 
   grid.innerHTML = items
     .map(
-      (item) => `
-      <article class="library-card">
+      (item, i) => `
+      <article class="library-card library-card-clickable" data-content-section="library" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
         <div class="library-category">${item.category}</div>
         <div class="library-title">${item.title}</div>
         <div class="library-meta">${item.meta}</div>
@@ -646,11 +767,15 @@ function renderEmployeeTraining() {
     { category: 'Conditioning', title: 'Boxing conditioning basics', meta: '25 min • Beginner' },
     { category: 'Mobility', title: 'Morning mobility flow', meta: '15 min • All levels' },
     { category: 'Strength', title: 'Lower body & core', meta: '35 min • Intermediate' },
+    { category: 'Split', title: 'Push Pull, Legs', meta: 'Weekly split • All levels' },
+    { category: 'Split', title: 'Upper and lower', meta: '2–4 day split • All levels' },
+    { category: 'Phase', title: 'Bulking', meta: 'Mass building focus • All levels' },
+    { category: 'Phase', title: 'Cutting', meta: 'Fat loss & conditioning • All levels' },
   ];
   grid.innerHTML = items
     .map(
-      (item) => `
-      <article class="library-card">
+      (item, i) => `
+      <article class="library-card library-card-clickable" data-content-section="training" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
         <div class="library-category">${item.category}</div>
         <div class="library-title">${item.title}</div>
         <div class="library-meta">${item.meta}</div>
@@ -663,6 +788,7 @@ function renderEmployeeTraining() {
 function renderEmployeeMentalHealth() {
   const grid = document.getElementById('employeeMentalHealthGrid');
   if (!grid) return;
+  const sectionKey = 'mental-health';
   const items = [
     { category: 'Stress', title: '5-minute stress reset', meta: 'Breathing & grounding • 5 min' },
     { category: 'Mindfulness', title: 'Daily mindfulness', meta: 'Focus & clarity • 12 min' },
@@ -671,8 +797,34 @@ function renderEmployeeMentalHealth() {
   ];
   grid.innerHTML = items
     .map(
-      (item) => `
-      <article class="library-card">
+      (item, i) => `
+      <article class="library-card library-card-clickable" data-content-section="${escapeAttr(sectionKey)}" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
+        <div class="library-category">${item.category}</div>
+        <div class="library-title">${item.title}</div>
+        <div class="library-meta">${item.meta}</div>
+      </article>
+    `
+    )
+    .join('');
+}
+
+function renderEmployeeNutrition() {
+  const grid = document.getElementById('employeeNutritionGrid');
+  if (!grid) return;
+  const sectionKey = 'nutrition';
+  const items = [
+    { category: 'Performance', title: 'Fuel for high-output days', meta: 'Guidelines &amp; templates' },
+    { category: 'Recovery', title: 'Post-training nutrition', meta: 'Timing &amp; macros' },
+    { category: 'Templates', title: 'Meal planning basics', meta: 'Simple structures' },
+    { category: 'Hydration', title: 'Fluid &amp; electrolytes', meta: 'High-sweat scenarios' },
+    { category: 'Guide', title: 'Supplement guide', meta: 'What to take &amp; when' },
+    { category: 'Phase', title: 'Cutting meals', meta: 'Calorie deficit &amp; macros' },
+    { category: 'Phase', title: 'Bulking meals', meta: 'Surplus &amp; muscle support' },
+  ];
+  grid.innerHTML = items
+    .map(
+      (item, i) => `
+      <article class="library-card library-card-clickable" data-content-section="${escapeAttr(sectionKey)}" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
         <div class="library-category">${item.category}</div>
         <div class="library-title">${item.title}</div>
         <div class="library-meta">${item.meta}</div>
@@ -691,8 +843,8 @@ function renderEmployeeNewsletter() {
   ];
   grid.innerHTML = items
     .map(
-      (item) => `
-      <article class="library-card">
+      (item, i) => `
+      <article class="library-card library-card-clickable" data-content-section="newsletter" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
         <div class="library-category">${item.category}</div>
         <div class="library-title">${item.title}</div>
         <div class="library-meta">${item.meta}</div>
@@ -700,6 +852,159 @@ function renderEmployeeNewsletter() {
     `
     )
     .join('');
+}
+
+function escapeAttr(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function openContentDetail(section, index, title, meta) {
+  const sectionLabel = CONTENT_SECTION_LABELS[section] || section;
+  const idx = Number(index);
+  currentContentDetail = { section, index: idx, title: title || '', meta: meta || '', sectionLabel };
+  setContentHash(section, idx);
+  switchEmployeeSection('content-detail');
+  closeDashboardSidebar();
+  requestAnimationFrame(() => renderContentDetail());
+}
+
+function renderContentDetail() {
+  const fromHash = getContentFromHash();
+  if (fromHash) {
+    const item = getContentItem(fromHash.section, fromHash.index);
+    if (item) {
+      currentContentDetail = {
+        section: fromHash.section,
+        index: fromHash.index,
+        title: item.title,
+        meta: item.meta,
+        sectionLabel: CONTENT_SECTION_LABELS[fromHash.section] || fromHash.section,
+      };
+    }
+  }
+  if (!currentContentDetail) return;
+
+  const { section, index, title, meta, sectionLabel } = currentContentDetail;
+  const sectionEl = document.querySelector('.employee-section[data-employee-section-view="content-detail"]');
+  if (!sectionEl) return;
+
+  const eyebrow = document.getElementById('contentDetailEyebrow');
+  const titleEl = document.getElementById('contentDetailTitle');
+  const subtitleEl = document.getElementById('contentDetailSubtitle');
+  const videoBlock = document.getElementById('contentDetailVideoBlock');
+  const videoContainer = document.getElementById('contentDetailVideo');
+  const pdfHeading = document.getElementById('contentDetailPdfHeading');
+  const pdfContainer = document.getElementById('contentDetailPdf');
+  const pdfBlock = document.getElementById('contentDetailPdfBlock');
+
+  if (eyebrow) eyebrow.textContent = sectionLabel;
+  if (titleEl) titleEl.textContent = title || 'Content';
+  if (subtitleEl) subtitleEl.textContent = meta || '';
+
+  const content = getContentDetail(section, index);
+  const isPastIssues = section === 'newsletter' && index === 1;
+
+  if (videoBlock) videoBlock.hidden = isPastIssues;
+  if (pdfBlock) pdfBlock.classList.toggle('content-detail-pdf-list', isPastIssues);
+  if (pdfHeading) pdfHeading.textContent = isPastIssues ? 'Past issues' : 'Downloadable PDF';
+
+  if (videoContainer && !isPastIssues) {
+    if (content?.videoUrl) {
+      videoContainer.innerHTML = `
+        <video class="week-detail-video" controls preload="metadata" aria-label="Video">
+          <source src="${escapeHtml(content.videoUrl)}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      `;
+    } else {
+      videoContainer.innerHTML = '<p class="week-detail-placeholder">Video will appear here when added.</p>';
+    }
+  }
+
+  if (pdfContainer) {
+    if (isPastIssues) {
+      const pdfUrls = content?.pdfUrls && Array.isArray(content.pdfUrls) ? content.pdfUrls : [];
+      if (pdfUrls.length) {
+        pdfContainer.innerHTML = `
+          <ul class="content-detail-pdf-list-items">
+            ${pdfUrls.map((item, i) => {
+              const url = typeof item === 'string' ? item : (item && item.url);
+              const label = typeof item === 'object' && item && item.label ? item.label : `Issue ${i + 1}`;
+              if (!url) return '';
+              return `<li><a href="${escapeHtml(url)}" download target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a></li>`;
+            }).join('')}
+          </ul>
+        `;
+      } else {
+        pdfContainer.innerHTML = '<p class="week-detail-placeholder">Past issues will be listed here when added.</p>';
+      }
+    } else {
+      if (content?.pdfUrl) {
+        pdfContainer.innerHTML = `
+          <a href="${escapeHtml(content.pdfUrl)}" class="btn btn-primary" download target="_blank" rel="noopener noreferrer">Download PDF</a>
+          <p class="form-footnote">Or <a href="${escapeHtml(content.pdfUrl)}" target="_blank" rel="noopener noreferrer">open in new tab</a>.</p>
+        `;
+      } else {
+        pdfContainer.innerHTML = '<p class="week-detail-placeholder">PDF will be available when added.</p>';
+      }
+    }
+  }
+}
+
+function initContentDetail() {
+  document.addEventListener(
+    'click',
+    (e) => {
+      const card = e.target.closest && e.target.closest('.library-card-clickable[data-content-section][data-content-index]');
+      if (!card) return;
+      const index = card.getAttribute('data-content-index');
+      if (index == null) return;
+      const visibleSectionEl = Array.from(document.querySelectorAll('.employee-section[data-employee-section-view]')).find((el) => !el.hidden);
+      const visibleSectionView = visibleSectionEl && visibleSectionEl.dataset.employeeSectionView;
+      const contentSections = ['library', 'training', 'mental-health', 'newsletter', 'nutrition'];
+      const section = visibleSectionView && contentSections.includes(visibleSectionView)
+        ? visibleSectionView
+        : card.getAttribute('data-content-section');
+      if (!section) return;
+      const idx = parseInt(index, 10);
+      const item = getContentItem(section, idx);
+      const title = (item && item.title) || card.getAttribute('data-content-title') || '';
+      const meta = (item && item.meta) || card.getAttribute('data-content-meta') || '';
+      e.preventDefault();
+      e.stopPropagation();
+      openContentDetail(section, idx, title, meta);
+    },
+    true
+  );
+
+  const backBtn = document.getElementById('contentDetailBack');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      if (currentContentDetail) switchEmployeeSection(currentContentDetail.section);
+      window.location.hash = '';
+      closeDashboardSidebar();
+    });
+  }
+
+  window.addEventListener('hashchange', () => {
+    const fromHash = getContentFromHash();
+    const section = document.querySelector('.employee-section[data-employee-section-view="content-detail"]');
+    if (fromHash && section && !section.hidden) renderContentDetail();
+    if (!fromHash && currentContentDetail) currentContentDetail = null;
+  });
+
+  const protocolBtn = document.getElementById('contentDetailProtocolBtn');
+  if (protocolBtn) {
+    protocolBtn.addEventListener('click', () => {
+      switchEmployeeSection('protocol');
+      closeDashboardSidebar();
+    });
+  }
 }
 
 function showAdminDashboard() {
@@ -1116,6 +1421,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAdminLogin();
   initNavListeners();
   initWeekDetail();
+  initContentDetail();
   initScrollReveal();
   restoreSession();
 });

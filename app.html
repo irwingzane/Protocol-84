@@ -131,6 +131,7 @@
                 <button class="app-nav-item" data-employee-section="training">On Demand Training</button>
                 <button class="app-nav-item" data-employee-section="mental-health">Mental Health Hub</button>
                 <button class="app-nav-item" data-employee-section="newsletter">Zane's Newsletter</button>
+                <button class="app-nav-item" data-employee-section="nutrition">Nutrition</button>
               </nav>
               <button type="button" class="sidebar-protocol-btn" data-employee-section="protocol" aria-label="Open Protocol AI assistant">
                 <span class="sidebar-protocol-btn-icon" aria-hidden="true">
@@ -282,6 +283,10 @@
                     <span class="library-hub-button-title">Zane's Newsletter</span>
                     <span class="library-hub-button-meta">Monthly newsletter providing science-based updates in the world of fitness</span>
                   </button>
+                  <button type="button" class="library-hub-button library-hub-button-quaternary" data-employee-section="nutrition">
+                    <span class="library-hub-button-title">Nutrition</span>
+                    <span class="library-hub-button-meta">Fuel for high-output days, guidelines &amp; templates</span>
+                  </button>
                 </div>
                 <div class="library-grid" id="employeeLibraryGrid"></div>
               </section>
@@ -317,6 +322,46 @@
                   </div>
                 </header>
                 <div class="library-grid" id="employeeNewsletterGrid"></div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="nutrition" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Nutrition</p>
+                    <h2>Fuel for high-output days.</h2>
+                    <p class="section-subtitle">Guidelines and templates to support performance and recovery.</p>
+                  </div>
+                </header>
+                <div class="library-grid" id="employeeNutritionGrid"></div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="content-detail" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <button type="button" class="btn btn-ghost btn-sm content-detail-back" id="contentDetailBack" aria-label="Back">← Back</button>
+                    <p class="eyebrow" id="contentDetailEyebrow">Content</p>
+                    <h2 id="contentDetailTitle">Content</h2>
+                    <p class="section-subtitle" id="contentDetailSubtitle"></p>
+                  </div>
+                </header>
+                <div class="week-detail-content content-detail-content">
+                  <div class="week-detail-block card" id="contentDetailVideoBlock">
+                    <h3>Video (MP4)</h3>
+                    <div class="week-detail-media" id="contentDetailVideo">
+                      <p class="week-detail-placeholder">Video will appear here when added.</p>
+                    </div>
+                  </div>
+                  <div class="week-detail-block card content-detail-pdf-block" id="contentDetailPdfBlock">
+                    <h3 id="contentDetailPdfHeading">Downloadable PDF</h3>
+                    <div class="week-detail-media content-detail-pdf-area" id="contentDetailPdf">
+                      <p class="week-detail-placeholder">PDF will be available when added.</p>
+                    </div>
+                  </div>
+                  <div class="week-detail-protocol-cta content-detail-protocol-cta">
+                    <button type="button" class="btn protocol-cta-btn" id="contentDetailProtocolBtn">Ask Protocol follow up questions</button>
+                    <p class="form-footnote">Open Protocol to ask follow-up questions about this content.</p>
+                  </div>
+                </div>
               </section>
 
               <section class="employee-section" data-employee-section-view="protocol" hidden>
