@@ -17,7 +17,8 @@ const WEEK_HASH_PREFIX = 'week-';
 let currentWeekDetailNum = null;
 
 function getWeekFromHash() {
-  const hash = typeof window !== 'undefined' && window.location ? window.location.hash : '';
+  const raw = typeof window !== 'undefined' && window.location ? window.location.hash : '';
+  const hash = raw && raw.charAt(0) === '#' ? raw.slice(1) : raw;
   if (!hash || !hash.startsWith(WEEK_HASH_PREFIX)) return null;
   const num = parseInt(hash.slice(WEEK_HASH_PREFIX.length), 10);
   return num >= 1 && num <= TOTAL_WEEKS ? num : null;
@@ -31,9 +32,9 @@ function setWeekHash(week) {
 }
 
 function getCurrentWeekForDetail() {
-  return currentWeekDetailNum != null && currentWeekDetailNum >= 1 && currentWeekDetailNum <= TOTAL_WEEKS
-    ? currentWeekDetailNum
-    : getWeekFromHash() || null;
+  const fromHash = getWeekFromHash();
+  if (fromHash != null) return fromHash;
+  return currentWeekDetailNum >= 1 && currentWeekDetailNum <= TOTAL_WEEKS ? currentWeekDetailNum : null;
 }
 
 function getWeekContent(week) {
@@ -322,6 +323,15 @@ function showEmployeeDashboard(employeeFromLogin) {
       });
       refreshAfterProgressChange(updated);
     };
+  }
+
+  const weekFromHash = getWeekFromHash();
+  if (weekFromHash != null) {
+    currentWeekDetailNum = weekFromHash;
+    const section = document.querySelector('.employee-section[data-employee-section-view="week-detail"]');
+    if (section) section.dataset.currentWeek = String(weekFromHash);
+    switchEmployeeSection('week-detail');
+    requestAnimationFrame(() => renderWeekDetail());
   }
 }
 

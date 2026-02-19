@@ -193,6 +193,11 @@
   border-color: rgba(0, 0, 0, 0.08);
 }
 
+.app-shell[data-theme="light"] .week-detail-block.card h3,
+.app-shell[data-theme="light"] .week-detail-notes h3 {
+  color: #111827;
+}
+
 .app-shell[data-theme="light"] .week-detail-placeholder {
   color: #6b7280;
 }
@@ -226,6 +231,157 @@
 
 .app-shell[data-theme="light"] .admin-notes-item-body {
   color: #374151;
+}
+
+/* Light mode: all dashboard boxes readable (light bg + dark text) */
+.app-shell[data-theme="light"] .overview-progress-card,
+.app-shell[data-theme="light"] .overview-current-week-card,
+.app-shell[data-theme="light"] .overview-badges-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .overview-progress-card h3,
+.app-shell[data-theme="light"] .overview-current-week-card h3,
+.app-shell[data-theme="light"] .overview-badges-card h3 {
+  color: #111827;
+}
+
+.app-shell[data-theme="light"] .overview-progress-card .section-subtitle,
+.app-shell[data-theme="light"] .overview-progress-card .form-footnote,
+.app-shell[data-theme="light"] .overview-current-week-card .section-subtitle,
+.app-shell[data-theme="light"] .overview-badges-card .form-footnote {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .progress-bar {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.app-shell[data-theme="light"] .progress-bar-meta {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .current-week-list {
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .badge-chip {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .badge-chip-earned {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #047857;
+}
+
+.app-shell[data-theme="light"] .journey-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .journey-card p {
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .journey-week-label {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .journey-status-upcoming {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .journey-status-current {
+  border-color: rgba(37, 99, 235, 0.5);
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+}
+
+.app-shell[data-theme="light"] .journey-status-completed {
+  border-color: rgba(22, 163, 74, 0.5);
+  background: rgba(22, 163, 74, 0.1);
+  color: #15803d;
+}
+
+.app-shell[data-theme="light"] .library-hub-button {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .library-hub-button-title {
+  color: #111827;
+}
+
+.app-shell[data-theme="light"] .library-hub-button-meta {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .library-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .library-category,
+.app-shell[data-theme="light"] .library-meta {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .library-title {
+  color: #111827;
+}
+
+.app-shell[data-theme="light"] .admin-metric-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .admin-metric-label,
+.app-shell[data-theme="light"] .admin-metric-footnote {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .admin-metric-value {
+  color: #111827;
+}
+
+.app-shell[data-theme="light"] .admin-metric-bar {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.app-shell[data-theme="light"] .app-dashboard-main .card .data-table th,
+.app-shell[data-theme="light"] .app-dashboard-main .card .data-table td {
+  color: #374151;
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+.app-shell[data-theme="light"] .app-dashboard-main .card .data-table th {
+  color: #111827;
+}
+
+.app-shell[data-theme="light"] .app-dashboard-main .card:not(.overview-progress-card):not(.overview-current-week-card):not(.overview-badges-card),
+.app-shell[data-theme="light"] .app-dashboard-main .card:not(.overview-progress-card):not(.overview-current-week-card):not(.overview-badges-card) p,
+.app-shell[data-theme="light"] .app-dashboard-main .card:not(.overview-progress-card):not(.overview-current-week-card):not(.overview-badges-card) .form-footnote {
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .protocol-ai-placeholder {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(138, 43, 226, 0.25);
+}
+
+.app-shell[data-theme="light"] .protocol-ai-placeholder-text {
+  color: #6b7280;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1277,17 +1433,9 @@ button.journey-card-clickable {
   font-size: 1.55rem;
 }
 
-/* Employee overview cards (dark cards): keep light text */
-.app-dashboard-main .overview-progress-card,
-.app-dashboard-main .overview-current-week-card,
-.app-dashboard-main .overview-badges-card {
-  color: #e5e7eb;
-}
-
 .app-dashboard-main .overview-progress-card h3,
 .app-dashboard-main .overview-current-week-card h3,
 .app-dashboard-main .overview-badges-card h3 {
-  color: #f9fafb;
   font-size: 1.05rem;
 }
 
@@ -1295,7 +1443,6 @@ button.journey-card-clickable {
 .app-dashboard-main .overview-progress-card .form-footnote,
 .app-dashboard-main .overview-current-week-card .section-subtitle,
 .app-dashboard-main .overview-badges-card .form-footnote {
-  color: #d1d5db;
   font-size: 0.9rem;
   line-height: 1.5;
 }
