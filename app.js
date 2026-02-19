@@ -96,15 +96,19 @@ const CONTENT_SECTION_LABELS = {
 const CONTENT_HASH_PREFIX = 'content-';
 
 function getContentFromHash() {
-  const raw = typeof window !== 'undefined' && window.location ? window.location.hash : '';
-  const hash = raw && raw.charAt(0) === '#' ? raw.slice(1) : raw;
-  if (!hash || !hash.startsWith(CONTENT_HASH_PREFIX)) return null;
-  const rest = hash.slice(CONTENT_HASH_PREFIX.length);
-  const dash = rest.indexOf('-');
-  if (dash <= 0) return null;
-  const section = rest.slice(0, dash);
-  const index = parseInt(rest.slice(dash + 1), 10);
-  if (!CONTENT_SECTION_LABELS[section] || !Number.isFinite(index) || index < 0) return null;
+  if (typeof window === 'undefined' || !window.location) return null;
+  let hash = window.location.hash || '';
+  if (hash.charAt(0) === '#') hash = hash.slice(1);
+  if (!hash || hash.indexOf(CONTENT_HASH_PREFIX) !== 0) return null;
+  const rest = hash.slice(CONTENT_HASH_PREFIX.length).trim();
+  if (!rest) return null;
+  const parts = rest.split('-');
+  if (parts.length < 2) return null;
+  const indexStr = parts[parts.length - 1];
+  const index = parseInt(indexStr, 10);
+  if (!Number.isFinite(index) || index < 0) return null;
+  const section = parts.slice(0, -1).join('-');
+  if (!section || !CONTENT_SECTION_LABELS[section]) return null;
   return { section, index };
 }
 
@@ -447,7 +451,7 @@ function showEmployeeDashboard(employeeFromLogin) {
         sectionLabel: CONTENT_SECTION_LABELS[contentFromHash.section] || contentFromHash.section,
       };
       switchEmployeeSection('content-detail');
-      requestAnimationFrame(() => renderContentDetail());
+      renderContentDetail();
     }
   }
 }
@@ -870,7 +874,7 @@ function openContentDetail(section, index, title, meta) {
   setContentHash(section, idx);
   switchEmployeeSection('content-detail');
   closeDashboardSidebar();
-  requestAnimationFrame(() => renderContentDetail());
+  renderContentDetail();
 }
 
 function renderContentDetail() {
@@ -888,8 +892,22 @@ function renderContentDetail() {
     }
   }
   if (!currentContentDetail) return;
-
-  const { section, index, title, meta, sectionLabel } = currentContentDetail;
+  let section = currentContentDetail.section;
+  let index = currentContentDetail.index;
+  let title = currentContentDetail.title;
+  let meta = currentContentDetail.meta;
+  let sectionLabel = currentContentDetail.sectionLabel;
+  if (fromHash) {
+    const item = getContentItem(fromHash.section, fromHash.index);
+    if (item) {
+      section = fromHash.section;
+      index = fromHash.index;
+      title = item.title;
+      meta = item.meta;
+      sectionLabel = CONTENT_SECTION_LABELS[section] || section;
+    }
+  }
+  if (!CONTENT_SECTION_LABELS[section]) return;
   const sectionEl = document.querySelector('.employee-section[data-employee-section-view="content-detail"]');
   if (!sectionEl) return;
 
@@ -984,17 +1002,31 @@ function initContentDetail() {
 
   const backBtn = document.getElementById('contentDetailBack');
   if (backBtn) {
-    backBtn.addEventListener('click', () => {
-      if (currentContentDetail) switchEmployeeSection(currentContentDetail.section);
+    backBtn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      let sectionToShow = currentContentDetail && currentContentDetail.section;
+      const h = (window.location.hash || '').replace(/^#/, '');
+      if (h.indexOf(CONTENT_HASH_PREFIX) === 0) {
+        const rest = h.slice(CONTENT_HASH_PREFIX.length);
+        const parts = rest.split('-');
+        if (parts.length >= 2) {
+          const sec = parts.slice(0, -1).join('-');
+          if (CONTENT_SECTION_LABELS[sec]) sectionToShow = sec;
+        }
+      }
+      if (sectionToShow) switchEmployeeSection(sectionToShow);
       window.location.hash = '';
       closeDashboardSidebar();
-    });
+    };
   }
 
   window.addEventListener('hashchange', () => {
     const fromHash = getContentFromHash();
-    const section = document.querySelector('.employee-section[data-employee-section-view="content-detail"]');
-    if (fromHash && section && !section.hidden) renderContentDetail();
+    const contentDetailSection = document.querySelector('.employee-section[data-employee-section-view="content-detail"]');
+    if (fromHash && contentDetailSection && !contentDetailSection.hidden) {
+      renderContentDetail();
+    }
     if (!fromHash && currentContentDetail) currentContentDetail = null;
   });
 
