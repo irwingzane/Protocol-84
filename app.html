@@ -183,7 +183,10 @@
                       <div class="progress-bar-inner" id="employeeProgressBar"></div>
                     </div>
                     <div class="progress-bar-meta" id="employeeProgressMeta"></div>
-                    <button class="btn btn-primary btn-full" id="markWeekCompleteButton">Mark current week as completed</button>
+                    <div class="progress-actions">
+                      <button class="btn btn-primary btn-full" id="markWeekCompleteButton">Mark current week as completed</button>
+                      <button type="button" class="btn btn-ghost btn-sm" id="undoWeekCompleteButton" aria-label="Undo last week completed">Undo last week completed</button>
+                    </div>
                     <p class="form-footnote">This button simulates programme completion in the MVP. In production, completion is tied to module usage and assessments.</p>
                   </article>
                   <article class="card overview-current-week-card reveal-on-scroll">
@@ -207,6 +210,55 @@
                   </div>
                 </header>
                 <div class="journey-grid" id="employeeJourneyGrid"></div>
+              </section>
+
+              <section class="employee-section" data-employee-section-view="week-detail" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <button type="button" class="btn btn-ghost btn-sm week-detail-back" id="weekDetailBack" aria-label="Back to 12-week journey">← Back to journey</button>
+                    <p class="eyebrow" id="weekDetailEyebrow">Week</p>
+                    <h2 id="weekDetailTitle">Week content</h2>
+                    <p class="section-subtitle" id="weekDetailSubtitle">Video and resources for this week.</p>
+                  </div>
+                </header>
+                <div class="week-detail-content">
+                  <div class="week-detail-block card" id="weekDetailVideoBlock">
+                    <h3>Video (MP4)</h3>
+                    <div class="week-detail-media" id="weekDetailVideo">
+                      <p class="week-detail-placeholder">Video will appear here when added for this week.</p>
+                    </div>
+                  </div>
+                  <div class="week-detail-block card" id="weekDetailPdfBlock">
+                    <h3>Downloadable PDF</h3>
+                    <div class="week-detail-media" id="weekDetailPdf">
+                      <p class="week-detail-placeholder">PDF will be available when added for this week.</p>
+                    </div>
+                  </div>
+                  <div class="week-detail-notes card" id="weekDetailNotesBlock">
+                    <h3>My Notes</h3>
+                    <p class="section-subtitle">Your private notes for this week. Toggle below to allow your admin to read them.</p>
+                    <div class="week-detail-notes-text-wrap">
+                      <label for="weekDetailNotes" class="sr-only">My notes for this week</label>
+                      <textarea id="weekDetailNotes" rows="5" placeholder="Reflections, questions, or goals for this week…"></textarea>
+                    </div>
+                    <div class="week-detail-notes-toggle-row">
+                      <label class="toggle-label" for="weekDetailNotesVisibleToAdmin">
+                        <span class="toggle-label-text">Visible to admin</span>
+                        <span class="toggle-desc">When on, your notes for this week can be read in the admin dashboard.</span>
+                      </label>
+                      <input type="checkbox" id="weekDetailNotesVisibleToAdmin" class="toggle-checkbox" aria-describedby="weekDetailNotesVisibleDesc" />
+                    </div>
+                    <p class="form-footnote" id="weekDetailNotesVisibleDesc">Only weeks with this turned on will appear under Employee notes in the admin view.</p>
+                    <div class="week-detail-notes-actions">
+                      <button type="button" class="btn btn-primary" id="weekDetailSaveNotes">Save notes</button>
+                      <p class="form-footnote" id="weekDetailSaveStatus" aria-live="polite"></p>
+                    </div>
+                    <div class="week-detail-protocol-cta">
+                      <button type="button" class="btn protocol-cta-btn" id="weekDetailProtocolBtn">Ask Protocol about my notes</button>
+                      <p class="form-footnote">Opens Protocol so you can get answers based on what you’ve written here.</p>
+                    </div>
+                  </div>
+                </div>
               </section>
 
               <section class="employee-section" data-employee-section-view="library" hidden>
@@ -290,6 +342,7 @@
               <nav class="app-nav">
                 <button class="app-nav-item app-nav-item-active" data-admin-section="analytics">Organisation overview</button>
                 <button class="app-nav-item" data-admin-section="employees">Employees</button>
+                <button class="app-nav-item" data-admin-section="notes">Employee notes</button>
                 <button class="app-nav-item" data-admin-section="reports">Reports</button>
               </nav>
               <div class="app-sidebar-footer">
@@ -347,6 +400,20 @@
                       <tbody id="adminEmployeeTableBody"></tbody>
                     </table>
                   </div>
+                </div>
+              </section>
+
+              <section class="admin-section" data-admin-section-view="notes" hidden>
+                <header class="dashboard-header">
+                  <div>
+                    <p class="eyebrow">Employee notes</p>
+                    <h2>Notes shared by employees.</h2>
+                    <p class="section-subtitle">Only weeks where the employee turned on “Visible to admin” are listed. MVP data is from this browser.</p>
+                  </div>
+                </header>
+                <div class="card admin-notes-list" id="adminNotesList">
+                  <p class="week-detail-placeholder" id="adminNotesPlaceholder">No notes shared yet. Employees can make their week notes visible to you from their 12-week journey.</p>
+                  <div id="adminNotesContent" class="admin-notes-content" hidden></div>
                 </div>
               </section>
 

@@ -9,6 +9,58 @@ import {
 
 const TOTAL_WEEKS = 12;
 const THEME_KEY = 'protocol84_theme';
+const WEEK_CONTENT_KEY = 'protocol84_week_content';
+
+const WEEK_HASH_PREFIX = 'week-';
+
+/** Currently open week (1–12). Set when opening week-detail; used so notes always load/save for the correct week. */
+let currentWeekDetailNum = null;
+
+function getWeekFromHash() {
+  const hash = typeof window !== 'undefined' && window.location ? window.location.hash : '';
+  if (!hash || !hash.startsWith(WEEK_HASH_PREFIX)) return null;
+  const num = parseInt(hash.slice(WEEK_HASH_PREFIX.length), 10);
+  return num >= 1 && num <= TOTAL_WEEKS ? num : null;
+}
+
+function setWeekHash(week) {
+  if (typeof window === 'undefined' || !window.location) return;
+  const w = typeof week === 'number' && week >= 1 && week <= TOTAL_WEEKS ? week : null;
+  const want = w != null ? WEEK_HASH_PREFIX + w : '';
+  if (window.location.hash !== want) window.location.hash = want;
+}
+
+function getCurrentWeekForDetail() {
+  return currentWeekDetailNum != null && currentWeekDetailNum >= 1 && currentWeekDetailNum <= TOTAL_WEEKS
+    ? currentWeekDetailNum
+    : getWeekFromHash() || null;
+}
+
+function getWeekContent(week) {
+  try {
+    const raw = localStorage.getItem(WEEK_CONTENT_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    return all[String(week)] || null;
+  } catch (_) {}
+  return null;
+}
+
+function setWeekContent(week, data) {
+  try {
+    const raw = localStorage.getItem(WEEK_CONTENT_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    all[String(week)] = { ...(all[String(week)] || {}), ...data };
+    localStorage.setItem(WEEK_CONTENT_KEY, JSON.stringify(all));
+  } catch (_) {}
+}
+
+function getAllWeeksContent() {
+  try {
+    const raw = localStorage.getItem(WEEK_CONTENT_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (_) {}
+  return {};
+}
 
 function getTheme() {
   try {
@@ -62,9 +114,11 @@ function initAccessStatus() {
   const access = getCompanyAccess();
   if (access) {
     el.textContent = `Demo mode (tier: ${access.tier || 'demo'}) – metrics are for example only`;
+    el.setAttribute('data-short', 'Demo');
     el.classList.add('access-active');
   } else {
     el.textContent = 'Demo mode – company access not yet purchased';
+    el.setAttribute('data-short', 'No access');
     el.classList.add('access-inactive');
   }
 }
@@ -113,6 +167,7 @@ function switchAdminSection(section) {
   document.querySelectorAll('[data-admin-section]').forEach((btn) => {
     btn.classList.toggle('app-nav-item-active', btn.dataset.adminSection === section);
   });
+  if (section === 'notes') renderAdminNotes();
 }
 
 function initLoginTabs() {
@@ -228,6 +283,18 @@ function showEmployeeDashboard(employeeFromLogin) {
   renderEmployeeNewsletter();
 
   const markWeekBtn = document.getElementById('markWeekCompleteButton');
+  const undoWeekBtn = document.getElementById('undoWeekCompleteButton');
+
+  function refreshAfterProgressChange(updatedEmployee) {
+    if (!updatedEmployee) return;
+    employee = updatedEmployee;
+    renderEmployeeProgress(employee);
+    renderEmployeeCurrentWeek(employee);
+    renderEmployeeBadges(employee);
+    renderEmployeeJourney(employee);
+    if (undoWeekBtn) undoWeekBtn.hidden = (employee.weeksCompleted || 0) === 0;
+  }
+
   if (markWeekBtn) {
     markWeekBtn.onclick = () => {
       const updated = updateEmployeeProgress(employee.email, (current) => {
@@ -238,12 +305,22 @@ function showEmployeeDashboard(employeeFromLogin) {
           lastActivity: new Date().toISOString(),
         };
       });
-      if (!updated) return;
-      employee = updated;
-      renderEmployeeProgress(employee);
-      renderEmployeeCurrentWeek(employee);
-      renderEmployeeBadges(employee);
-      renderEmployeeJourney(employee);
+      refreshAfterProgressChange(updated);
+    };
+  }
+
+  if (undoWeekBtn) {
+    undoWeekBtn.hidden = (employee.weeksCompleted || 0) === 0;
+    undoWeekBtn.onclick = () => {
+      const updated = updateEmployeeProgress(employee.email, (current) => {
+        const weeksCompleted = Math.max(0, (current.weeksCompleted || 0) - 1);
+        return {
+          ...current,
+          weeksCompleted,
+          lastActivity: new Date().toISOString(),
+        };
+      });
+      refreshAfterProgressChange(updated);
     };
   }
 }
@@ -316,6 +393,21 @@ function renderEmployeeBadges(employee) {
     .join('');
 }
 
+const WEEK_FOCUS = [
+  'Foundations &amp; energy',
+  'Foundations &amp; energy',
+  'Foundations &amp; energy',
+  'Foundations &amp; energy',
+  'Execution &amp; resilience',
+  'Execution &amp; resilience',
+  'Execution &amp; resilience',
+  'Execution &amp; resilience',
+  'Integration &amp; leadership',
+  'Integration &amp; leadership',
+  'Integration &amp; leadership',
+  'Integration &amp; leadership',
+];
+
 function renderEmployeeJourney(employee) {
   const grid = document.getElementById('employeeJourneyGrid');
   if (!grid) return;
@@ -333,18 +425,157 @@ function renderEmployeeJourney(employee) {
       statusClass = 'journey-status-current';
       statusLabel = 'Current';
     }
-
+    const focus = WEEK_FOCUS[week - 1] || 'Performance focus';
     cards.push(`
-      <article class="journey-card">
+      <button type="button" class="journey-card journey-card-clickable" data-week="${week}" aria-label="Open week ${week} content">
         <div class="journey-card-header">
           <span class="journey-week-label">Week ${week}</span>
           <span class="journey-status-pill ${statusClass}">${statusLabel}</span>
         </div>
-        <p>Performance focus: ${week <= 4 ? 'Foundations &amp; energy' : week <= 8 ? 'Execution &amp; resilience' : 'Integration &amp; leadership'}.</p>
-      </article>
+        <p>Performance focus: ${focus}.</p>
+      </button>
     `);
   }
   grid.innerHTML = cards.join('');
+  // Clicks are handled by a single document-level listener in initWeekDetail that reads data-week from the clicked button
+}
+
+function openWeekDetail(week) {
+  const weekNum = typeof week === 'number' && week >= 1 && week <= TOTAL_WEEKS ? week : null;
+  if (weekNum == null) return;
+  currentWeekDetailNum = weekNum;
+  setWeekHash(weekNum);
+  const section = document.querySelector('.employee-section[data-employee-section-view="week-detail"]');
+  if (section) section.dataset.currentWeek = String(weekNum);
+  switchEmployeeSection('week-detail');
+  closeDashboardSidebar();
+  requestAnimationFrame(() => renderWeekDetail());
+}
+
+function renderWeekDetail() {
+  const section = document.querySelector('.employee-section[data-employee-section-view="week-detail"]');
+  const weekLabel = getCurrentWeekForDetail() || parseInt(section?.dataset?.currentWeek || '0', 10);
+  if (weekLabel < 1 || weekLabel > TOTAL_WEEKS) return;
+  currentWeekDetailNum = weekLabel;
+  if (!section) return;
+  section.dataset.currentWeek = String(weekLabel);
+
+  const eyebrow = section.querySelector('#weekDetailEyebrow') || document.getElementById('weekDetailEyebrow');
+  const title = section.querySelector('#weekDetailTitle') || document.getElementById('weekDetailTitle');
+  const subtitle = section.querySelector('#weekDetailSubtitle') || document.getElementById('weekDetailSubtitle');
+  const videoContainer = section.querySelector('#weekDetailVideo') || document.getElementById('weekDetailVideo');
+  const pdfContainer = section.querySelector('#weekDetailPdf') || document.getElementById('weekDetailPdf');
+  const notesInput = section.querySelector('#weekDetailNotes') || document.getElementById('weekDetailNotes');
+  const visibleToggle = section.querySelector('#weekDetailNotesVisibleToAdmin') || document.getElementById('weekDetailNotesVisibleToAdmin');
+  const saveStatus = section.querySelector('#weekDetailSaveStatus') || document.getElementById('weekDetailSaveStatus');
+
+  const focus = weekLabel <= 4 ? 'Foundations & energy' : weekLabel <= 8 ? 'Execution & resilience' : 'Integration & leadership';
+  if (eyebrow) eyebrow.textContent = `Week ${weekLabel}`;
+  if (title) title.textContent = `Week ${weekLabel}: ${focus}`;
+  if (subtitle) subtitle.textContent = 'Video and resources for this week.';
+
+  const content = getWeekContent(weekLabel);
+
+  if (videoContainer) {
+    if (content?.videoUrl) {
+      videoContainer.innerHTML = `
+        <video class="week-detail-video" controls preload="metadata" aria-label="Week ${weekLabel} video">
+          <source src="${content.videoUrl}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      `;
+    } else {
+      videoContainer.innerHTML = '<p class="week-detail-placeholder">Video will appear here when added for this week.</p>';
+    }
+  }
+
+  if (pdfContainer) {
+    if (content?.pdfUrl) {
+      pdfContainer.innerHTML = `
+        <a href="${content.pdfUrl}" class="btn btn-primary" download target="_blank" rel="noopener noreferrer">Download PDF for Week ${weekLabel}</a>
+        <p class="form-footnote">Or <a href="${content.pdfUrl}" target="_blank" rel="noopener noreferrer">open in new tab</a>.</p>
+      `;
+    } else {
+      pdfContainer.innerHTML = '<p class="week-detail-placeholder">PDF will be available when added for this week.</p>';
+    }
+  }
+
+  if (notesInput) notesInput.value = content?.notes || '';
+  if (visibleToggle) visibleToggle.checked = !!content?.notesVisibleToAdmin;
+  if (saveStatus) saveStatus.textContent = '';
+}
+
+function initWeekDetail() {
+  // Single document-level listener: read week only from the clicked button (avoids wrong week)
+  document.addEventListener(
+    'click',
+    (e) => {
+      const grid = document.getElementById('employeeJourneyGrid');
+      if (!grid || !grid.contains(e.target)) return;
+      const btn = e.target.closest && e.target.closest('button[data-week]');
+      if (!btn) return;
+      const weekStr = btn.getAttribute('data-week');
+      const weekNum = weekStr != null ? parseInt(weekStr, 10) : 0;
+      if (weekNum < 1 || weekNum > TOTAL_WEEKS) return;
+      e.preventDefault();
+      e.stopPropagation();
+      currentWeekDetailNum = weekNum;
+      openWeekDetail(weekNum);
+    },
+    true
+  );
+
+  window.addEventListener('hashchange', () => {
+    const week = getWeekFromHash();
+    const section = document.querySelector('.employee-section[data-employee-section-view="week-detail"]');
+    if (week != null && section && !section.hidden) {
+      currentWeekDetailNum = week;
+      renderWeekDetail();
+    }
+  });
+
+  const backBtn = document.getElementById('weekDetailBack');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      currentWeekDetailNum = null;
+      setWeekHash('');
+      switchEmployeeSection('journey');
+      closeDashboardSidebar();
+    });
+  }
+
+  const saveNotesBtn = document.getElementById('weekDetailSaveNotes');
+  if (saveNotesBtn) {
+    saveNotesBtn.addEventListener('click', () => {
+      const weekNum = getCurrentWeekForDetail();
+      if (weekNum == null || weekNum < 1 || weekNum > TOTAL_WEEKS) return;
+      const notesInput = document.getElementById('weekDetailNotes');
+      const visibleToggle = document.getElementById('weekDetailNotesVisibleToAdmin');
+      const saveStatus = document.getElementById('weekDetailSaveStatus');
+      setWeekContent(weekNum, {
+        notes: (notesInput?.value || '').trim() || null,
+        notesVisibleToAdmin: !!visibleToggle?.checked,
+      });
+      if (saveStatus) saveStatus.textContent = 'Notes saved.';
+      renderWeekDetail();
+    });
+  }
+
+  const protocolBtn = document.getElementById('weekDetailProtocolBtn');
+  if (protocolBtn) {
+    protocolBtn.addEventListener('click', () => {
+      const weekNum = getCurrentWeekForDetail();
+      const notesInput = document.getElementById('weekDetailNotes');
+      const notes = (notesInput?.value || '').trim();
+      const content = weekNum != null ? getWeekContent(weekNum) : null;
+      const notesForContext = notes || content?.notes || '';
+      try {
+        sessionStorage.setItem('protocol84_notes_context', notesForContext);
+      } catch (_) {}
+      switchEmployeeSection('protocol');
+      closeDashboardSidebar();
+    });
+  }
 }
 
 function renderEmployeeLibrary() {
@@ -719,6 +950,47 @@ function renderAdminEmployees() {
     .join('');
 }
 
+function renderAdminNotes() {
+  const placeholder = document.getElementById('adminNotesPlaceholder');
+  const content = document.getElementById('adminNotesContent');
+  if (!placeholder || !content) return;
+
+  const all = getAllWeeksContent();
+  const weeksWithNotes = [];
+  for (let week = 1; week <= TOTAL_WEEKS; week += 1) {
+    const c = all[String(week)];
+    if (c?.notesVisibleToAdmin && (c.notes != null && c.notes !== '')) {
+      weeksWithNotes.push({ week, notes: c.notes });
+    }
+  }
+
+  if (weeksWithNotes.length === 0) {
+    placeholder.hidden = false;
+    content.hidden = true;
+    content.innerHTML = '';
+    return;
+  }
+
+  placeholder.hidden = true;
+  content.hidden = false;
+  content.innerHTML = weeksWithNotes
+    .map(
+      ({ week, notes }) => `
+    <div class="admin-notes-item card">
+      <h3 class="admin-notes-item-title">Week ${week}</h3>
+      <div class="admin-notes-item-body">${escapeHtml(notes).replace(/\n/g, '<br>')}</div>
+    </div>
+  `
+    )
+    .join('');
+}
+
+function escapeHtml(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
 function initAdminActions() {
   const simulateBtn = document.getElementById('simulateActivityButton');
   if (simulateBtn) {
@@ -833,6 +1105,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initEmployeeLogin();
   initAdminLogin();
   initNavListeners();
+  initWeekDetail();
   initScrollReveal();
   restoreSession();
 });
