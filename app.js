@@ -8,6 +8,44 @@ import {
 } from './storage.js';
 
 const TOTAL_WEEKS = 12;
+const THEME_KEY = 'protocol84_theme';
+
+function getTheme() {
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch (_) {}
+  return 'dark';
+}
+
+function setTheme(theme) {
+  const shell = document.getElementById('appShell');
+  if (shell) shell.setAttribute('data-theme', theme);
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch (_) {}
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    toggle.classList.toggle('theme-is-light', theme === 'light');
+    toggle.classList.toggle('theme-is-dark', theme === 'dark');
+    toggle.setAttribute('aria-label', theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+  }
+}
+
+function initTheme() {
+  const theme = getTheme();
+  setTheme(theme);
+}
+
+function initThemeToggle() {
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const shell = document.getElementById('appShell');
+    const next = shell?.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    setTheme(next);
+  });
+}
 
 function getCompanyAccess() {
   try {
@@ -787,6 +825,8 @@ function initScrollReveal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initThemeToggle();
   initAccessStatus();
   initHeaderButtons();
   initLoginTabs();

@@ -4,6 +4,179 @@
     radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
 }
 
+/* Light mode */
+.app-shell[data-theme="light"] {
+  background: radial-gradient(ellipse 100% 80% at top left, rgba(0, 122, 204, 0.08) 0%, transparent 45%),
+    radial-gradient(ellipse 80% 60% at bottom right, rgba(138, 43, 226, 0.05) 0%, transparent 45%),
+    #e5eaf2;
+}
+
+.app-shell[data-theme="light"] .app-header {
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.app-shell[data-theme="light"] .app-header-inner {
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .theme-toggle {
+  background: rgba(243, 244, 246, 0.9);
+  border-color: rgba(209, 213, 219, 0.9);
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .theme-toggle:hover {
+  background: rgba(229, 231, 235, 0.95);
+  border-color: rgba(156, 163, 175, 0.9);
+}
+
+.app-shell[data-theme="light"] .btn-ghost.btn-sm {
+  border-color: rgba(107, 114, 128, 0.5);
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .btn-ghost.btn-sm:hover {
+  background: rgba(243, 244, 246, 0.9);
+  color: #111827;
+}
+
+.app-shell[data-theme="light"] .access-status-badge {
+  border-color: rgba(107, 114, 128, 0.5);
+  color: #4b5563;
+}
+
+.app-shell[data-theme="light"] .access-status-badge.access-active {
+  border-color: rgba(16, 185, 129, 0.6);
+  background: rgba(16, 185, 129, 0.1);
+  color: #047857;
+}
+
+.app-shell[data-theme="light"] .access-status-badge.access-inactive {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(254, 226, 226, 0.8);
+  color: #b91c1c;
+}
+
+.app-shell[data-theme="light"] .app-auth-grid,
+.app-shell[data-theme="light"] .app-view-login {
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .app-auth-copy .section-subtitle {
+  color: #4b5563;
+}
+
+.app-shell[data-theme="light"] .app-auth-benefits ul {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .app-auth-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.app-shell[data-theme="light"] .login-tabs {
+  background: #e5e7eb;
+}
+
+.app-shell[data-theme="light"] .login-tab {
+  color: #4b5563;
+}
+
+.app-shell[data-theme="light"] .login-tab-active {
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+.app-shell[data-theme="light"] .app-auth-card .form-row label {
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .app-auth-card .form-row input {
+  background: #f9fafb;
+  border-color: rgba(209, 213, 219, 0.9);
+  color: #111827;
+}
+
+.app-shell[data-theme="light"] .app-auth-card .form-row input::placeholder {
+  color: #9ca3af;
+}
+
+.app-shell[data-theme="light"] .app-auth-card .form-footnote {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .app-sidebar {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(209, 213, 219, 0.6);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.app-shell[data-theme="light"] .app-nav-item {
+  color: #374151;
+}
+
+.app-shell[data-theme="light"] .app-nav-item-active,
+.app-shell[data-theme="light"] .app-nav-item:hover {
+  background: rgba(0, 122, 204, 0.1);
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .app-user-block {
+  background: linear-gradient(135deg, rgba(0, 122, 204, 0.12), rgba(138, 43, 226, 0.06));
+}
+
+.app-shell[data-theme="light"] .app-user-meta {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .sidebar-protocol-btn {
+  border-color: rgba(138, 43, 226, 0.4);
+  background: rgba(138, 43, 226, 0.06);
+}
+
+.app-shell[data-theme="light"] .sidebar-protocol-btn-label {
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .sidebar-protocol-btn-desc {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .app-sidebar-footer p,
+.app-shell[data-theme="light"] .sidebar-footnote {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .app-dashboard-main {
+  background: linear-gradient(180deg, rgba(249, 250, 251, 0.95) 0%, rgba(243, 244, 246, 0.98) 100%);
+}
+
+.app-shell[data-theme="light"] .app-dashboard-main .eyebrow {
+  color: #007ACC;
+}
+
+.app-shell[data-theme="light"] .app-dashboard-main .dashboard-header h2 {
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .app-dashboard-main .dashboard-header .section-subtitle {
+  color: #6b7280;
+}
+
+.app-shell[data-theme="light"] .app-dashboard-grid {
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .progress-pill {
+  background: linear-gradient(135deg, rgba(0, 122, 204, 0.12), rgba(138, 43, 226, 0.08));
+  border-color: rgba(0, 122, 204, 0.35);
+  color: #1e3a5f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
@@ -27,6 +200,38 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.6);
+  color: #e5e7eb;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: rgba(148, 163, 184, 0.7);
+}
+
+.theme-toggle .theme-toggle-icon {
+  display: none;
+}
+
+.theme-toggle.theme-is-dark .theme-toggle-sun {
+  display: block;
+}
+
+.theme-toggle.theme-is-light .theme-toggle-moon {
+  display: block;
 }
 
 .btn-sm {
