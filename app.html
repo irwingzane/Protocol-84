@@ -80,6 +80,10 @@
               <div class="login-panel" id="employeeLoginPanel" role="tabpanel">
                 <form id="employeeLoginForm">
                   <div class="form-row">
+                    <label for="employeeDemoCode">DEMO ACCESS CODE</label>
+                    <input id="employeeDemoCode" name="demoCode" type="text" autocomplete="off" placeholder="Enter demo code to continue" required />
+                  </div>
+                  <div class="form-row">
                     <label for="employeeCompanyCode">Company access code</label>
                     <input id="employeeCompanyCode" name="companyCode" type="text" autocomplete="organization" placeholder="E.g. YOURCOMPANY (optional for now)" />
                   </div>
@@ -101,6 +105,10 @@
 
               <div class="login-panel login-panel-hidden" id="adminLoginPanel" role="tabpanel" hidden>
                 <form id="adminLoginForm">
+                  <div class="form-row">
+                    <label for="adminDemoCode">DEMO ACCESS CODE</label>
+                    <input id="adminDemoCode" name="demoCode" type="text" autocomplete="off" placeholder="Enter demo code to continue" required />
+                  </div>
                   <div class="form-row">
                     <label for="adminEmail">Admin email</label>
                     <input id="adminEmail" name="email" type="email" autocomplete="email" placeholder="admin@company.com (optional for now)" />
@@ -124,41 +132,44 @@
           <div class="container app-dashboard-grid">
             <aside class="app-sidebar reveal-on-scroll" aria-label="Employee navigation">
               <div class="app-user-block" id="employeeUserBlock"></div>
-              <nav class="app-nav">
-                <button class="app-nav-item app-nav-item-active" data-employee-section="overview">Overview</button>
-                <button class="app-nav-item" data-employee-section="journey">12-week journey</button>
-                <button class="app-nav-item" data-employee-section="library">Content library</button>
-                <button class="app-nav-item" data-employee-section="training">On Demand Training</button>
-                <button class="app-nav-item" data-employee-section="mental-health">Mental Health Hub</button>
-                <button class="app-nav-item" data-employee-section="newsletter">Zane's Newsletter</button>
-                <button class="app-nav-item" data-employee-section="nutrition">Nutrition</button>
-              </nav>
-              <button type="button" class="sidebar-protocol-btn" data-employee-section="protocol" aria-label="Open Protocol AI assistant">
-                <span class="sidebar-protocol-btn-icon" aria-hidden="true">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4z" fill="url(#protocol-robot-a)"/>
-                    <path d="M6 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8z" fill="url(#protocol-robot-b)"/>
-                    <circle cx="9" cy="12" r="1.25" fill="#f9fafb"/>
-                    <circle cx="15" cy="12" r="1.25" fill="#f9fafb"/>
-                    <path d="M9 16h6" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/>
-                    <defs>
-                      <linearGradient id="protocol-robot-a" x1="6" y1="2" x2="14" y2="8" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#2563eb"/>
-                        <stop offset="1" stop-color="#8b5cf6"/>
-                      </linearGradient>
-                      <linearGradient id="protocol-robot-b" x1="6" y1="8" x2="18" y2="16" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#3b82f6"/>
-                        <stop offset="1" stop-color="#a78bfa"/>
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </span>
-                <span class="sidebar-protocol-btn-label">Protocol</span>
-                <span class="sidebar-protocol-btn-desc">AI assistant for fitness &amp; lifestyle questions</span>
-              </button>
-              <div class="app-sidebar-footer">
-                <p>Need help?</p>
-                <p class="sidebar-footnote">Contact your HR or People team for support.</p>
+              <button type="button" class="app-sidebar-menu-toggle" id="employeeSidebarMenuToggle" aria-expanded="false" aria-controls="employeeSidebarDropdown" aria-label="Toggle menu">Menu</button>
+              <div class="app-sidebar-dropdown" id="employeeSidebarDropdown">
+                <nav class="app-nav">
+                  <button class="app-nav-item app-nav-item-active" data-employee-section="overview">Overview</button>
+                  <button class="app-nav-item" data-employee-section="journey">12-week journey</button>
+                  <button class="app-nav-item" data-employee-section="library">Content library</button>
+                  <button class="app-nav-item" data-employee-section="training">On Demand Training</button>
+                  <button class="app-nav-item" data-employee-section="mental-health">Mental Health Hub</button>
+                  <button class="app-nav-item" data-employee-section="newsletter">Zane's Newsletter</button>
+                  <button class="app-nav-item" data-employee-section="nutrition">Nutrition</button>
+                </nav>
+                <button type="button" class="sidebar-protocol-btn" data-employee-section="protocol" aria-label="Open Protocol AI assistant">
+                  <span class="sidebar-protocol-btn-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4z" fill="url(#protocol-robot-a)"/>
+                      <path d="M6 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8z" fill="url(#protocol-robot-b)"/>
+                      <circle cx="9" cy="12" r="1.25" fill="#f9fafb"/>
+                      <circle cx="15" cy="12" r="1.25" fill="#f9fafb"/>
+                      <path d="M9 16h6" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round"/>
+                      <defs>
+                        <linearGradient id="protocol-robot-a" x1="6" y1="2" x2="14" y2="8" gradientUnits="userSpaceOnUse">
+                          <stop stop-color="#2563eb"/>
+                          <stop offset="1" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                        <linearGradient id="protocol-robot-b" x1="6" y1="8" x2="18" y2="16" gradientUnits="userSpaceOnUse">
+                          <stop stop-color="#3b82f6"/>
+                          <stop offset="1" stop-color="#a78bfa"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </span>
+                  <span class="sidebar-protocol-btn-label">Protocol</span>
+                  <span class="sidebar-protocol-btn-desc">AI assistant for fitness &amp; lifestyle questions</span>
+                </button>
+                <div class="app-sidebar-footer">
+                  <p>Need help?</p>
+                  <p class="sidebar-footnote">Contact your HR or People team for support.</p>
+                </div>
               </div>
             </aside>
 
@@ -384,15 +395,18 @@
           <div class="container app-dashboard-grid">
             <aside class="app-sidebar reveal-on-scroll" aria-label="Admin navigation">
               <div class="app-user-block" id="adminUserBlock"></div>
-              <nav class="app-nav">
-                <button class="app-nav-item app-nav-item-active" data-admin-section="analytics">Organisation overview</button>
-                <button class="app-nav-item" data-admin-section="employees">Employees</button>
-                <button class="app-nav-item" data-admin-section="notes">Employee notes</button>
-                <button class="app-nav-item" data-admin-section="reports">Reports</button>
-              </nav>
-              <div class="app-sidebar-footer">
-                <p>Admin access</p>
-                <p class="sidebar-footnote">For production use, integrate with SSO and your HRIS to manage users automatically.</p>
+              <button type="button" class="app-sidebar-menu-toggle" id="adminSidebarMenuToggle" aria-expanded="false" aria-controls="adminSidebarDropdown" aria-label="Toggle menu">Menu</button>
+              <div class="app-sidebar-dropdown" id="adminSidebarDropdown">
+                <nav class="app-nav">
+                  <button class="app-nav-item app-nav-item-active" data-admin-section="analytics">Organisation overview</button>
+                  <button class="app-nav-item" data-admin-section="employees">Employees</button>
+                  <button class="app-nav-item" data-admin-section="notes">Employee notes</button>
+                  <button class="app-nav-item" data-admin-section="reports">Reports</button>
+                </nav>
+                <div class="app-sidebar-footer">
+                  <p>Admin access</p>
+                  <p class="sidebar-footnote">For production use, integrate with SSO and your HRIS to manage users automatically.</p>
+                </div>
               </div>
             </aside>
 

@@ -754,6 +754,14 @@
   margin: 0.2rem 0 0;
 }
 
+.app-sidebar-menu-toggle {
+  display: none;
+}
+
+.app-sidebar-dropdown {
+  display: block;
+}
+
 .app-dashboard-main {
   background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), rgba(15, 23, 42, 0.97) 55%),
     radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.06), transparent 55%);
@@ -1601,6 +1609,59 @@ button.journey-card-clickable {
   .app-dashboard-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .app-sidebar-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #e5e7eb;
+    background: rgba(55, 65, 81, 0.6);
+    border: 1px solid rgba(75, 85, 99, 0.8);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .app-sidebar-menu-toggle:hover {
+    background: rgba(75, 85, 99, 0.7);
+    border-color: rgba(139, 92, 246, 0.4);
+  }
+
+  .app-sidebar-menu-toggle[aria-expanded="true"] {
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(139, 92, 246, 0.15);
+  }
+
+  .app-sidebar-dropdown {
+    display: none;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(55, 65, 81, 0.6);
+  }
+
+  .app-sidebar.sidebar-menu-open .app-sidebar-dropdown {
+    display: block;
+  }
+}
+
+.app-shell[data-theme="light"] .app-sidebar-menu-toggle {
+  color: #1f2937;
+  background: rgba(243, 244, 246, 0.9);
+  border-color: rgba(209, 213, 219, 0.9);
+}
+
+.app-shell[data-theme="light"] .app-sidebar-menu-toggle:hover {
+  background: #e5e7eb;
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.app-shell[data-theme="light"] .app-sidebar-menu-toggle[aria-expanded="true"] {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.4);
 }
 
 @media (max-width: 840px) {

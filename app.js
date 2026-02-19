@@ -303,9 +303,16 @@ function initEmployeeLogin() {
   const statusEl = document.getElementById('employeeLoginStatus');
   if (!form || !statusEl) return;
 
+  const DEMO_ACCESS_CODE = 'outthehood';
+
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const data = new FormData(form);
+    const demoCode = (data.get('demoCode') || '').toString().trim().toLowerCase();
+    if (demoCode !== DEMO_ACCESS_CODE.toLowerCase()) {
+      statusEl.textContent = 'Invalid demo access code. Please enter the correct code.';
+      return;
+    }
     const companyCode = (data.get('companyCode') || '').toString().trim() || 'DEMO';
     const email = (data.get('email') || '').toString().trim().toLowerCase() || 'employee@demo.com';
     const name = (data.get('name') || '').toString().trim();
@@ -332,9 +339,16 @@ function initAdminLogin() {
   const statusEl = document.getElementById('adminLoginStatus');
   if (!form || !statusEl) return;
 
+  const DEMO_ACCESS_CODE = 'outthehood';
+
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const data = new FormData(form);
+    const demoCode = (data.get('demoCode') || '').toString().trim().toLowerCase();
+    if (demoCode !== DEMO_ACCESS_CODE.toLowerCase()) {
+      statusEl.textContent = 'Invalid demo access code. Please enter the correct code.';
+      return;
+    }
     const companyCode = (data.get('companyCode') || '').toString().trim() || 'DEMO';
     const email = (data.get('email') || '').toString().trim().toLowerCase() || 'admin@company.com';
 
@@ -1385,15 +1399,43 @@ function initAdminActions() {
 }
 
 function initNavListeners() {
+  const menuToggle = document.getElementById('employeeSidebarMenuToggle');
+  const employeeSidebar = document.querySelector('.app-view-dashboard[data-view="employee"] .app-sidebar');
+
+  if (menuToggle && employeeSidebar) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = employeeSidebar.classList.toggle('sidebar-menu-open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
+
   document.querySelectorAll('[data-employee-section]').forEach((btn) => {
     btn.addEventListener('click', () => {
       switchEmployeeSection(btn.dataset.employeeSection);
+      if (employeeSidebar) {
+        employeeSidebar.classList.remove('sidebar-menu-open');
+        if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+      }
     });
   });
+
+  const adminMenuToggle = document.getElementById('adminSidebarMenuToggle');
+  const adminSidebar = document.querySelector('.app-view-dashboard[data-view="admin"] .app-sidebar');
+
+  if (adminMenuToggle && adminSidebar) {
+    adminMenuToggle.addEventListener('click', () => {
+      const isOpen = adminSidebar.classList.toggle('sidebar-menu-open');
+      adminMenuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
 
   document.querySelectorAll('[data-admin-section]').forEach((btn) => {
     btn.addEventListener('click', () => {
       switchAdminSection(btn.dataset.adminSection);
+      if (adminSidebar) {
+        adminSidebar.classList.remove('sidebar-menu-open');
+        if (adminMenuToggle) adminMenuToggle.setAttribute('aria-expanded', 'false');
+      }
     });
   });
 }

@@ -39,6 +39,32 @@ scrollButtons.forEach((btn) => {
   });
 });
 
+const navDropdownToggle = document.getElementById('navDropdownToggle');
+const navDropdown = document.getElementById('navDropdown');
+
+if (navDropdownToggle && navDropdown) {
+  navDropdownToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = !navDropdown.hidden;
+    navDropdown.hidden = isOpen;
+    navDropdownToggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  navDropdown.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      navDropdown.hidden = true;
+      navDropdownToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    if (!navDropdown.hidden) {
+      navDropdown.hidden = true;
+      navDropdownToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
 const yearSpan = document.getElementById('footerYear');
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear().toString();
@@ -93,24 +119,6 @@ purchaseButtons.forEach((btn) => {
   });
 });
 
-const navToggle = document.getElementById('navToggle');
-const mobileNav = document.getElementById('mobileNav');
-
-if (navToggle && mobileNav) {
-  navToggle.addEventListener('click', () => {
-    const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-    navToggle.setAttribute('aria-expanded', String(!isExpanded));
-    mobileNav.hidden = isExpanded;
-  });
-
-  mobileNav.querySelectorAll('[data-mobile-nav-link]').forEach((link) => {
-    link.addEventListener('click', () => {
-      navToggle.setAttribute('aria-expanded', 'false');
-      mobileNav.hidden = true;
-    });
-  });
-}
-
 document.body.classList.add('enable-scroll-reveal');
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -135,4 +143,72 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
     el.classList.add('reveal-visible');
   });
 }
+
+function initFeaturesCarousel() {
+  const track = document.getElementById('featuresCarouselTrack');
+  const viewport = document.querySelector('.features-carousel-viewport');
+  const prevBtn = document.querySelector('.features-carousel-prev');
+  const nextBtn = document.querySelector('.features-carousel-next');
+  const dotsEl = document.getElementById('featuresCarouselDots');
+  if (!track || !viewport) return;
+
+  const slides = track.querySelectorAll('.features-carousel-slide');
+  const total = slides.length;
+  const gap = 16;
+  let currentIndex = 0;
+
+  function getSlidesVisible() {
+    if (window.matchMedia('(min-width: 960px)').matches) return 3;
+    if (window.matchMedia('(min-width: 640px)').matches) return 2;
+    return 1;
+  }
+
+  function updateCarousel() {
+    const visible = getSlidesVisible();
+    const maxIndex = Math.max(0, total - visible);
+    currentIndex = Math.min(Math.max(0, currentIndex), maxIndex);
+    const viewportWidth = viewport.getBoundingClientRect().width;
+    const slideWidth = (viewportWidth - (visible - 1) * gap) / visible;
+    const offset = currentIndex * (slideWidth + gap);
+    track.style.transform = `translateX(-${offset}px)`;
+
+    if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+    if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex;
+
+    if (dotsEl) {
+      dotsEl.innerHTML = '';
+      const numDots = maxIndex + 1;
+      for (let i = 0; i < numDots; i++) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'features-carousel-dot';
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dot.setAttribute('aria-current', i === currentIndex ? 'true' : 'false');
+        dot.addEventListener('click', () => {
+          currentIndex = i;
+          updateCarousel();
+        });
+        dotsEl.appendChild(dot);
+      }
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      currentIndex--;
+      updateCarousel();
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      currentIndex++;
+      updateCarousel();
+    });
+  }
+
+  window.addEventListener('resize', updateCarousel);
+  updateCarousel();
+}
+
+initFeaturesCarousel();
 

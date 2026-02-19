@@ -26,37 +26,23 @@
           <div class="logo">
             <img class="logo-image" src="./logo.PNG" alt="Protocol84" />
           </div>
-          <nav class="main-nav" aria-label="Primary navigation">
-            <a href="#how-it-works">How it works</a>
-            <a href="#programme">Programme</a>
-            <a href="#benefits">Benefits</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-          </nav>
-          <button
-            class="nav-toggle"
-            id="navToggle"
-            aria-label="Toggle navigation"
-            aria-expanded="false"
-            aria-controls="mobileNav"
-          >
-            <span></span>
-            <span></span>
-          </button>
+          <div class="nav-dropdown-wrap">
+            <button type="button" class="btn btn-ghost" id="navDropdownToggle" aria-expanded="false" aria-haspopup="true" aria-controls="navDropdown">Navigate</button>
+            <nav class="nav-dropdown" id="navDropdown" aria-label="Primary navigation" hidden>
+              <a href="#how-it-works">How it works</a>
+              <a href="#programme">Programme</a>
+              <a href="#benefits">Benefits</a>
+              <a href="#pricing">Pricing</a>
+              <a href="#about">About</a>
+              <a href="#meet-the-team">Meet the Team</a>
+              <a href="#contact">Contact</a>
+            </nav>
+          </div>
           <div class="header-ctas">
             <button class="btn btn-ghost" data-scroll-to="#pricing">See pricing</button>
             <a class="btn btn-primary" href="./app.html">Login</a>
           </div>
         </div>
-        <nav class="mobile-nav" id="mobileNav" aria-label="Primary navigation" hidden>
-          <a href="#how-it-works" data-mobile-nav-link>How it works</a>
-          <a href="#programme" data-mobile-nav-link>Programme</a>
-          <a href="#benefits" data-mobile-nav-link>Benefits</a>
-          <a href="#pricing" data-mobile-nav-link>Pricing</a>
-          <a href="#about" data-mobile-nav-link>About</a>
-          <a href="#contact" data-mobile-nav-link>Contact</a>
-        </nav>
       </header>
 
       <main>
@@ -182,78 +168,87 @@
               nutrition guides aligned to their specific performance, resilience, or body-composition goals.
             </p>
           </div>
-          <div class="container features-grid">
-            <article class="feature-card reveal-on-scroll">
-              <h3>Structured 12-week journey</h3>
-              <p>
-                A clear week-by-week pathway guiding employees from baseline assessment through to sustainable high
-                performance.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Pre-recorded workouts</h3>
-              <p>
-                Time-efficient sessions designed for busy professionals. Accessible in-office, at home, or on the road.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Gym training programmes</h3>
-              <p>
-                Progressive training tracks aligned with performance, energy, and resilience outcomes—not aesthetics.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Goal-based training splits</h3>
-              <p>
-                On-demand strength, performance, and conditioning splits that employees can follow beyond 12 weeks,
-                tailored to different schedules and objectives.
-              </p>
-            </article>
-            <article class="feature-card feature-card-highlight reveal-on-scroll">
-              <h3>Monthly science updates</h3>
-              <p>
-                Ongoing content updates aligned with current research to keep your programme relevant and effective.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Discipline &amp; habit system</h3>
-              <p>
-                Structured habits and accountability tools that help employees actually follow through over 12 weeks.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Stress management routines</h3>
-              <p>
-                Practical, short interventions that employees can use before key meetings, deadlines, and high-pressure
-                periods.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Productivity &amp; performance</h3>
-              <p>
-                Weekly modules on focus, prioritisation, and execution so employees can convert energy into output.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Nutrition guidance</h3>
-              <p>
-                Evidence-based frameworks for fuelling performance, improving recovery, and supporting cognitive function,
-                with guides that adapt to differing goals and preferences.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Integrated AI fitness assistant</h3>
-              <p>
-                An in-app AI tool that answers fitness, nutrition, and programme questions so employees get instant,
-                evidence-based guidance whenever they need it.
-              </p>
-            </article>
-            <article class="feature-card reveal-on-scroll">
-              <h3>Mental resilience training</h3>
-              <p>
-                Tools to manage setbacks, maintain composure, and build confidence in high-stakes environments.
-              </p>
-            </article>
+          <div class="container features-carousel-wrap">
+            <div class="features-carousel" aria-label="Programme features carousel">
+              <button type="button" class="features-carousel-btn features-carousel-prev" aria-label="Previous feature">‹</button>
+              <div class="features-carousel-viewport">
+                <div class="features-carousel-track" id="featuresCarouselTrack">
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Structured 12-week journey</h3>
+                    <p>
+                      A clear week-by-week pathway guiding employees from baseline assessment through to sustainable high
+                      performance.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Pre-recorded workouts</h3>
+                    <p>
+                      Time-efficient sessions designed for busy professionals. Accessible in-office, at home, or on the road.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Gym training programmes</h3>
+                    <p>
+                      Progressive training tracks aligned with performance, energy, and resilience outcomes—not aesthetics.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Goal-based training splits</h3>
+                    <p>
+                      On-demand strength, performance, and conditioning splits that employees can follow beyond 12 weeks,
+                      tailored to different schedules and objectives.
+                    </p>
+                  </article>
+                  <article class="feature-card feature-card-highlight features-carousel-slide">
+                    <h3>Monthly science updates</h3>
+                    <p>
+                      Ongoing content updates aligned with current research to keep your programme relevant and effective.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Discipline &amp; habit system</h3>
+                    <p>
+                      Structured habits and accountability tools that help employees actually follow through over 12 weeks.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Stress management routines</h3>
+                    <p>
+                      Practical, short interventions that employees can use before key meetings, deadlines, and high-pressure
+                      periods.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Productivity &amp; performance</h3>
+                    <p>
+                      Weekly modules on focus, prioritisation, and execution so employees can convert energy into output.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Nutrition guidance</h3>
+                    <p>
+                      Evidence-based frameworks for fuelling performance, improving recovery, and supporting cognitive function,
+                      with guides that adapt to differing goals and preferences.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Integrated AI fitness assistant</h3>
+                    <p>
+                      An in-app AI tool that answers fitness, nutrition, and programme questions so employees get instant,
+                      evidence-based guidance whenever they need it.
+                    </p>
+                  </article>
+                  <article class="feature-card features-carousel-slide">
+                    <h3>Mental resilience training</h3>
+                    <p>
+                      Tools to manage setbacks, maintain composure, and build confidence in high-stakes environments.
+                    </p>
+                  </article>
+                </div>
+              </div>
+              <button type="button" class="features-carousel-btn features-carousel-next" aria-label="Next feature">›</button>
+            </div>
+            <div class="features-carousel-dots" id="featuresCarouselDots" aria-label="Carousel navigation"></div>
           </div>
         </section>
 
@@ -350,7 +345,7 @@
                 <li>Employee progress dashboards</li>
                 <li>Email support</li>
               </ul>
-              <button class="btn btn-primary" data-purchase-tier="small">Purchase access</button>
+              <button type="button" class="btn btn-primary" disabled>🔒 Coming soon</button>
               <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
             </article>
             <article class="pricing-card pricing-card-featured reveal-on-scroll">
@@ -363,7 +358,7 @@
                 <li>Manager engagement insights</li>
                 <li>Quarterly leadership review</li>
               </ul>
-              <button class="btn btn-primary" data-purchase-tier="medium">Purchase access</button>
+              <button type="button" class="btn btn-primary" disabled>🔒 Coming soon</button>
               <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
             </article>
             <article class="pricing-card reveal-on-scroll">
@@ -433,6 +428,36 @@
           </div>
         </section>
 
+        <section class="section alt reveal-on-scroll" id="meet-the-team">
+          <div class="container section-header">
+            <p class="eyebrow">Meet the team</p>
+            <h2>Meet the Team</h2>
+            <p class="section-subtitle">The people behind Protocol84.</p>
+          </div>
+          <div class="container team-grid">
+            <div class="team-card about-card">
+              <div class="team-card-content">
+                <h3 class="team-name">Ethan Kemp</h3>
+                <p class="team-title">Head Trainer</p>
+                <p class="team-description">Ethan is on the current starting lineup for the Kentucky State Commonwealth University football team. He specialises in cardiovascular health and brings extensive knowledge to performance and conditioning.</p>
+              </div>
+              <div class="team-photo-placeholder">
+                <img src="ethan.jpg" alt="Ethan Kemp" />
+              </div>
+            </div>
+            <div class="team-card about-card">
+              <div class="team-card-content">
+                <h3 class="team-name">Zane Irwing</h3>
+                <p class="team-title">Founder and Coach</p>
+                <p class="team-description">Former boxer and current hypertrophic bodybuilder for three years. Zane works at Amazon in their corporate sector and has seen first-hand the need for office workers to have access to fitness and structured performance support.</p>
+              </div>
+              <div class="team-photo-placeholder">
+                <img src="zane.jpg" alt="Zane Irwing" />
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="section" id="contact">
           <div class="container section-header">
             <p class="eyebrow">Contact &amp; demo</p>
@@ -471,7 +496,7 @@
                 <textarea id="message" name="message" rows="4"></textarea>
               </div>
               <div class="form-row">
-                <button type="submit" class="btn btn-primary btn-full">Book demo</button>
+                <button type="button" class="btn btn-primary btn-full" disabled>🔒 Coming soon</button>
               </div>
               <p class="form-footnote" id="demoFormStatus"></p>
             </form>
@@ -479,7 +504,7 @@
             <div class="contact-info card reveal-on-scroll">
               <h3>Prefer to contact us directly?</h3>
               <p>
-                Email: <a href="mailto:hello@protocol84.com">hello@protocol84.com</a><br />
+                Email: <a href="mailto:irwingzane@gmail.com">irwingzane@gmail.com</a><br />
                 Phone: <a href="tel:+447306142153">+44 7306 142153</a>
               </p>
               <p>
