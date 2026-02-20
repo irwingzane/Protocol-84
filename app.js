@@ -215,13 +215,18 @@ function getCompanyAccess() {
 function initAccessStatus() {
   const el = document.getElementById('accessStatus');
   if (!el) return;
+  const label = el.querySelector('.access-status-label');
   const access = getCompanyAccess();
   if (access) {
-    el.textContent = `Demo mode (tier: ${access.tier || 'demo'}) – metrics are for example only`;
+    const full = `Demo mode (tier: ${access.tier || 'demo'}) – metrics are for example only`;
+    if (label) label.textContent = full;
+    el.setAttribute('data-full', full);
     el.setAttribute('data-short', 'Demo');
     el.classList.add('access-active');
   } else {
-    el.textContent = 'Demo mode – company access not yet purchased';
+    const full = 'Demo mode – company access not yet purchased';
+    if (label) label.textContent = full;
+    el.setAttribute('data-full', full);
     el.setAttribute('data-short', 'No access');
     el.classList.add('access-inactive');
   }

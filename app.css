@@ -452,6 +452,23 @@
   gap: 0.6rem;
 }
 
+@media (max-width: 640px) {
+  .app-header-inner {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-bottom: 0.6rem;
+  }
+  .app-header-inner .logo {
+    flex-shrink: 0;
+  }
+  .app-header-right {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+}
+
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -519,48 +536,23 @@
   color: #fecaca;
 }
 
-@media (max-width: 640px) {
-  .access-status-badge {
-    white-space: nowrap;
-    max-width: 5.5em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .access-status-badge[data-short] {
-    position: relative;
-  }
-  .access-status-badge[data-short]::after {
-    content: attr(data-short);
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.18rem 0.6rem;
-    font-size: 0.76rem;
-    border-radius: 999px;
-    background: inherit;
-    color: inherit;
-    border: 1px solid transparent;
-    box-sizing: border-box;
-  }
-  .access-status-badge[data-short] {
-    color: transparent;
-    user-select: none;
-  }
-  .access-status-badge[data-short].access-active::after {
-    border-color: rgba(16, 185, 129, 0.9);
-    background: rgba(16, 185, 129, 0.12);
-    color: #bbf7d0;
-  }
-  .access-status-badge[data-short].access-inactive::after {
-    border-color: rgba(239, 68, 68, 0.7);
-    background: rgba(248, 113, 113, 0.18);
-    color: #fecaca;
-  }
+.access-status-badge .access-status-label {
+  display: none;
+}
+.access-status-badge[data-short] {
+  position: relative;
+}
+.access-status-badge[data-short]::after {
+  content: attr(data-short);
+}
+.access-status-badge[data-short].access-active::after {
+  color: #bbf7d0;
+}
+.access-status-badge[data-short].access-inactive::after {
+  color: #fecaca;
+}
+.access-status-badge[data-short] {
+  color: transparent;
 }
 
 .app-main {
