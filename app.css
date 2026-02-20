@@ -1393,6 +1393,71 @@ button.journey-card-clickable {
   color: #9ca3af;
 }
 
+.this-weeks-session-cta {
+  margin-bottom: 1.25rem;
+}
+
+.this-weeks-session-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  width: 100%;
+  max-width: 340px;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(139, 92, 246, 0.45);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(139, 92, 246, 0.15));
+  color: #e5e7eb;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.this-weeks-session-btn:hover {
+  border-color: rgba(139, 92, 246, 0.6);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+  transform: translateY(-1px);
+}
+
+.this-weeks-session-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.2rem;
+  color: rgba(249, 250, 251, 0.9);
+}
+
+.this-weeks-session-btn-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.this-weeks-session-btn-desc {
+  font-size: 0.78rem;
+  color: #cbd5f5;
+  line-height: 1.35;
+}
+
+.app-shell[data-theme="light"] .this-weeks-session-btn {
+  border-color: rgba(138, 43, 226, 0.4);
+  background: rgba(138, 43, 226, 0.06);
+}
+
+.app-shell[data-theme="light"] .this-weeks-session-btn:hover {
+  border-color: rgba(138, 43, 226, 0.6);
+  background: rgba(138, 43, 226, 0.12);
+}
+
+.app-shell[data-theme="light"] .this-weeks-session-btn-label {
+  color: #1f2937;
+}
+
+.app-shell[data-theme="light"] .this-weeks-session-btn-desc {
+  color: #6b7280;
+}
+
 .library-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

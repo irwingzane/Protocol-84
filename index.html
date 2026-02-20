@@ -52,8 +52,9 @@
               <p class="eyebrow">Enterprise Employee Performance Platform</p>
               <h1>Improve Employee Performance, Resilience, and Wellbeing.</h1>
               <p class="hero-subtitle">
-                Science-based, structured 12-week programme delivered as an employee benefit, with an integrated AI tool
-                to help answer fitness questions on demand. Built for HR and People leaders in modern organisations.
+                Science-based, structured 12-week programme delivered as an employee benefit, with weekly guided training
+                sessions that introduce new exercises, plus an integrated AI tool to answer fitness questions on demand.
+                Built for HR and People leaders in modern organisations.
               </p>
               <div class="hero-ctas">
                 <button class="btn btn-primary" data-scroll-to="#contact">Book a demo</button>
@@ -64,6 +65,10 @@
                 <div>
                   <p class="hero-metric">12-week</p>
                   <p class="hero-metric-label">Structured programme</p>
+                </div>
+                <div>
+                  <p class="hero-metric">Weekly</p>
+                  <p class="hero-metric-label">Guided training sessions</p>
                 </div>
                 <div>
                   <p class="hero-metric">Global</p>
@@ -184,6 +189,13 @@
                     <h3>Pre-recorded workouts</h3>
                     <p>
                       Time-efficient sessions designed for busy professionals. Accessible in-office, at home, or on the road.
+                    </p>
+                  </article>
+                  <article class="feature-card feature-card-highlight features-carousel-slide">
+                    <h3>Weekly guided training sessions</h3>
+                    <p>
+                      Brand-new guided session every week so employees can try new exercises and stay motivated. A fresh,
+                      structured workout designed to build on the last.
                     </p>
                   </article>
                   <article class="feature-card features-carousel-slide">
@@ -335,52 +347,67 @@
               Scale from small teams to global organisations with predictable costs and volume-based discounts.
             </p>
           </div>
-          <div class="container pricing-grid">
-            <article class="pricing-card reveal-on-scroll">
-              <h3>Small</h3>
-              <p class="pricing-label">Up to 25 employees</p>
-              <p class="pricing-price">£10.99 / employee / month</p>
-              <ul class="pricing-features">
-                <li>Full 12-week programme access</li>
-                <li>Employee progress dashboards</li>
-                <li>Email support</li>
-              </ul>
-              <button type="button" class="btn btn-primary" disabled>🔒 Coming soon</button>
-              <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
-            </article>
-            <article class="pricing-card pricing-card-featured reveal-on-scroll">
-              <div class="pricing-badge">Most popular</div>
-              <h3>Medium</h3>
-              <p class="pricing-label">Up to 100 employees</p>
-              <p class="pricing-price">£6.99 / employee / month</p>
-              <ul class="pricing-features">
-                <li>Everything in Small</li>
-                <li>Manager engagement insights</li>
-                <li>Quarterly leadership review</li>
-              </ul>
-              <button type="button" class="btn btn-primary" disabled>🔒 Coming soon</button>
-              <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
-            </article>
-            <article class="pricing-card reveal-on-scroll">
-              <h3>Enterprise</h3>
-              <p class="pricing-label">100+ employees</p>
-              <p class="pricing-price">Custom pricing</p>
-              <ul class="pricing-features">
-                <li>Dedicated customer success</li>
-                <li>Advanced reporting &amp; exports</li>
-                <li>Global rollout support</li>
-              </ul>
-              <button class="btn btn-primary" data-scroll-to="#contact">Talk to sales</button>
-              <p class="pricing-footnote">
-                Volume discounts, multi-year agreements, and regional pricing available.
-              </p>
-            </article>
-          </div>
-          <div class="container payment-note">
-            <p>
-              In a production environment, payments are processed securely via your preferred payment gateway (e.g.
-              Stripe). This MVP uses a simulated purchase flow for demonstration.
-            </p>
+          <div class="container pricing-carousel-wrap">
+            <div class="pricing-carousel" aria-label="Pricing plans carousel">
+              <button type="button" class="pricing-carousel-btn pricing-carousel-prev" aria-label="Previous plan">‹</button>
+              <div class="pricing-carousel-viewport">
+                <div class="pricing-carousel-track" id="pricingCarouselTrack">
+                  <article class="pricing-card pricing-carousel-slide reveal-on-scroll">
+                    <h3>Personal</h3>
+                    <p class="pricing-label">For individuals</p>
+                    <p class="pricing-price">£18.99 / month</p>
+                    <ul class="pricing-features">
+                      <li>Full 12-week programme access</li>
+                      <li>Personal progress tracking</li>
+                      <li>Email support</li>
+                    </ul>
+                    <button type="button" class="btn btn-primary" disabled>🔒 Coming soon</button>
+                    <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
+                  </article>
+                  <article class="pricing-card pricing-carousel-slide reveal-on-scroll">
+                    <h3>Small</h3>
+                    <p class="pricing-label">Up to 25 employees</p>
+                    <p class="pricing-price">£10.99 / employee / month</p>
+                    <ul class="pricing-features">
+                      <li>Full 12-week programme access</li>
+                      <li>Employee progress dashboards</li>
+                      <li>Email support</li>
+                    </ul>
+                    <button type="button" class="btn btn-primary" disabled>🔒 Coming soon</button>
+                    <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
+                  </article>
+                  <article class="pricing-card pricing-card-featured pricing-carousel-slide reveal-on-scroll">
+                    <div class="pricing-badge">Most popular</div>
+                    <h3>Medium</h3>
+                    <p class="pricing-label">Up to 100 employees</p>
+                    <p class="pricing-price">£6.99 / employee / month</p>
+                    <ul class="pricing-features">
+                      <li>Everything in Small</li>
+                      <li>Manager engagement insights</li>
+                      <li>Quarterly leadership review</li>
+                    </ul>
+                    <button type="button" class="btn btn-primary" disabled>🔒 Coming soon</button>
+                    <button class="btn btn-ghost" data-scroll-to="#contact">Book a demo</button>
+                  </article>
+                  <article class="pricing-card pricing-carousel-slide reveal-on-scroll">
+                    <h3>Enterprise</h3>
+                    <p class="pricing-label">100+ employees</p>
+                    <p class="pricing-price">Custom pricing</p>
+                    <ul class="pricing-features">
+                      <li>Dedicated customer success</li>
+                      <li>Advanced reporting &amp; exports</li>
+                      <li>Global rollout support</li>
+                    </ul>
+                    <button class="btn btn-primary" data-scroll-to="#contact">Talk to sales</button>
+                    <p class="pricing-footnote">
+                      Volume discounts, multi-year agreements, and regional pricing available.
+                    </p>
+                  </article>
+                </div>
+              </div>
+              <button type="button" class="pricing-carousel-btn pricing-carousel-next" aria-label="Next plan">›</button>
+            </div>
+            <div class="pricing-carousel-dots" id="pricingCarouselDots" aria-label="Carousel navigation"></div>
           </div>
         </section>
 

@@ -1424,6 +1424,21 @@ function initNavListeners() {
     });
   });
 
+  const thisWeeksSessionBtn = document.getElementById('thisWeeksSessionBtn');
+  if (thisWeeksSessionBtn) {
+    thisWeeksSessionBtn.addEventListener('click', () => {
+      switchEmployeeSection('this-weeks-session');
+      if (employeeSidebar) {
+        employeeSidebar.classList.remove('sidebar-menu-open');
+        if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+  const thisWeeksSessionBack = document.getElementById('thisWeeksSessionBack');
+  if (thisWeeksSessionBack) {
+    thisWeeksSessionBack.addEventListener('click', () => switchEmployeeSection('training'));
+  }
+
   const adminMenuToggle = document.getElementById('adminSidebarMenuToggle');
   const adminSidebar = document.querySelector('.app-view-dashboard[data-view="admin"] .app-sidebar');
 

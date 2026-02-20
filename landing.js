@@ -210,5 +210,85 @@ function initFeaturesCarousel() {
   updateCarousel();
 }
 
-initFeaturesCarousel();
+function initPricingCarousel() {
+  const track = document.getElementById('pricingCarouselTrack');
+  const viewport = document.querySelector('.pricing-carousel-viewport');
+  const prevBtn = document.querySelector('.pricing-carousel-prev');
+  const nextBtn = document.querySelector('.pricing-carousel-next');
+  const dotsEl = document.getElementById('pricingCarouselDots');
+  if (!track || !viewport) return;
+
+  const slides = track.querySelectorAll('.pricing-carousel-slide');
+  const total = slides.length;
+  const gap = 16;
+  let currentIndex = 0;
+
+  function getSlidesVisible() {
+    if (window.matchMedia('(min-width: 960px)').matches) return 3;
+    if (window.matchMedia('(min-width: 640px)').matches) return 2;
+    return 1;
+  }
+
+  function updateCarousel() {
+    const visible = getSlidesVisible();
+    const maxIndex = Math.max(0, total - visible);
+    currentIndex = Math.min(Math.max(0, currentIndex), maxIndex);
+    const viewportWidth = viewport.getBoundingClientRect().width;
+    const slideWidth = (viewportWidth - (visible - 1) * gap) / visible;
+    const offset = currentIndex * (slideWidth + gap);
+    track.style.gap = `${gap}px`;
+    track.style.transform = `translateX(-${offset}px)`;
+    slides.forEach((slide) => {
+      slide.style.flex = `0 0 ${slideWidth}px`;
+      slide.style.minWidth = `${slideWidth}px`;
+    });
+
+    if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+    if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex;
+
+    if (dotsEl) {
+      dotsEl.innerHTML = '';
+      const numDots = maxIndex + 1;
+      for (let i = 0; i < numDots; i++) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'pricing-carousel-dot';
+        dot.setAttribute('aria-label', `Go to plan ${i + 1}`);
+        dot.setAttribute('aria-current', i === currentIndex ? 'true' : 'false');
+        dot.addEventListener('click', () => {
+          currentIndex = i;
+          updateCarousel();
+        });
+        dotsEl.appendChild(dot);
+      }
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      currentIndex--;
+      updateCarousel();
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      currentIndex++;
+      updateCarousel();
+    });
+  }
+
+  window.addEventListener('resize', updateCarousel);
+  updateCarousel();
+}
+
+function initCarousels() {
+  initFeaturesCarousel();
+  initPricingCarousel();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCarousels);
+} else {
+  initCarousels();
+}
 
