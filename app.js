@@ -1007,9 +1007,10 @@ function renderContentDetail() {
     } else {
       if (content?.pdfUrl) {
         const pdfUrlSafe = escapeHtml(content.pdfUrl);
+        const pdfSrc = `${pdfUrlSafe}#view=Fit&page=1&toolbar=1`;
         pdfContainer.innerHTML = `
           <div class="content-detail-pdf-preview">
-            <iframe src="${pdfUrlSafe}#toolbar=1" class="content-detail-pdf-iframe" title="PDF preview" type="application/pdf"></iframe>
+            <iframe src="${pdfSrc}" class="content-detail-pdf-iframe" title="PDF preview" type="application/pdf"></iframe>
           </div>
           <p class="form-footnote content-detail-pdf-links">
             <button type="button" class="btn btn-primary btn-sm content-detail-pdf-fullscreen-btn" data-pdf-url="${pdfUrlSafe}" aria-label="Open PDF in full screen">Open in full screen</button>

@@ -1252,6 +1252,14 @@ button.journey-card-clickable {
   display: block;
 }
 
+@media (max-width: 640px) {
+  .content-detail-pdf-preview {
+    min-height: 320px;
+    height: 55vh;
+    max-height: 520px;
+  }
+}
+
 .content-detail-pdf-links {
   margin: 0;
   display: flex;
