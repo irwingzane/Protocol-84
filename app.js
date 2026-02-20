@@ -158,6 +158,17 @@ const CONTENT_ITEMS = {
   ],
 };
 
+/** PDF paths for nutrition content (same order as CONTENT_ITEMS.nutrition). Use assets/nutrition-pdfs/ so PDFs deploy with the site. */
+const NUTRITION_PDF_URLS = [
+  "assets/nutrition-pdfs/Fuel for high-output days.pdf",
+  "assets/nutrition-pdfs/Post-training nutrition.pdf",
+  "assets/nutrition-pdfs/Meal Planning Basics.pdf",
+  "assets/nutrition-pdfs/Fluid & Electroyltes.pdf",
+  "assets/nutrition-pdfs/Supplement Guide.pdf",
+  "assets/nutrition-pdfs/Cutting Meals.pdf",
+  "assets/nutrition-pdfs/Bulking Meals.pdf",
+];
+
 function getContentItem(section, index) {
   const items = CONTENT_ITEMS[section];
   if (!items || index < 0 || index >= items.length) return null;
@@ -845,15 +856,21 @@ function renderEmployeeNutrition() {
     { category: 'Phase', title: 'Bulking meals', meta: 'Surplus &amp; muscle support' },
   ];
   grid.innerHTML = items
-    .map(
-      (item, i) => `
-      <article class="library-card library-card-clickable" data-content-section="${escapeAttr(sectionKey)}" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
+    .map((item, i) => {
+      const pdfPath = NUTRITION_PDF_URLS[i];
+      const pdfHref = pdfPath ? encodeURI(pdfPath) : '#';
+      return `
+      <article class="library-card library-card-clickable library-card-nutrition" data-content-section="${escapeAttr(sectionKey)}" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
         <div class="library-category">${item.category}</div>
         <div class="library-title">${item.title}</div>
         <div class="library-meta">${item.meta}</div>
+        <div class="library-card-actions">
+          <button type="button" class="btn btn-sm btn-ghost library-card-btn library-card-btn-read">Read</button>
+          <a href="${pdfHref}" class="btn btn-sm btn-primary library-card-btn library-card-download" download target="_blank" rel="noopener noreferrer">Download</a>
+        </div>
       </article>
-    `
-    )
+    `;
+    })
     .join('');
 }
 
@@ -943,12 +960,19 @@ function renderContentDetail() {
   if (titleEl) titleEl.textContent = title || 'Content';
   if (subtitleEl) subtitleEl.textContent = meta || '';
 
-  const content = getContentDetail(section, index);
+  let content = getContentDetail(section, index);
+  if (section === 'nutrition' && (!content || !content.pdfUrl) && NUTRITION_PDF_URLS[index] != null) {
+    content = { ...(content || {}), pdfUrl: NUTRITION_PDF_URLS[index] };
+  }
   const isPastIssues = section === 'newsletter' && index === 1;
 
   if (videoBlock) videoBlock.hidden = isPastIssues;
   if (pdfBlock) pdfBlock.classList.toggle('content-detail-pdf-list', isPastIssues);
-  if (pdfHeading) pdfHeading.textContent = isPastIssues ? 'Past issues' : 'Downloadable PDF';
+  if (pdfHeading) {
+    const showPdfPreview = content?.pdfUrl && !isPastIssues;
+    pdfHeading.textContent = showPdfPreview ? '' : (isPastIssues ? 'Past issues' : 'Downloadable PDF');
+    pdfHeading.hidden = showPdfPreview;
+  }
 
   if (videoContainer && !isPastIssues) {
     if (content?.videoUrl) {
@@ -982,9 +1006,15 @@ function renderContentDetail() {
       }
     } else {
       if (content?.pdfUrl) {
+        const pdfUrlSafe = escapeHtml(content.pdfUrl);
         pdfContainer.innerHTML = `
-          <a href="${escapeHtml(content.pdfUrl)}" class="btn btn-primary" download target="_blank" rel="noopener noreferrer">Download PDF</a>
-          <p class="form-footnote">Or <a href="${escapeHtml(content.pdfUrl)}" target="_blank" rel="noopener noreferrer">open in new tab</a>.</p>
+          <div class="content-detail-pdf-preview">
+            <iframe src="${pdfUrlSafe}#toolbar=1" class="content-detail-pdf-iframe" title="PDF preview" type="application/pdf"></iframe>
+          </div>
+          <p class="form-footnote content-detail-pdf-links">
+            <button type="button" class="btn btn-primary btn-sm content-detail-pdf-fullscreen-btn" data-pdf-url="${pdfUrlSafe}" aria-label="Open PDF in full screen">Open in full screen</button>
+            <a href="${pdfUrlSafe}" class="btn btn-primary btn-sm content-detail-pdf-link-btn" download target="_blank" rel="noopener noreferrer">Download</a>
+          </p>
         `;
       } else {
         pdfContainer.innerHTML = '<p class="week-detail-placeholder">PDF will be available when added.</p>';
@@ -997,6 +1027,7 @@ function initContentDetail() {
   document.addEventListener(
     'click',
     (e) => {
+      if (e.target.closest && e.target.closest('.library-card-download')) return;
       const card = e.target.closest && e.target.closest('.library-card-clickable[data-content-section][data-content-index]');
       if (!card) return;
       const index = card.getAttribute('data-content-index');
@@ -1018,6 +1049,14 @@ function initContentDetail() {
     },
     true
   );
+
+  document.addEventListener('click', (e) => {
+    const fullscreenBtn = e.target.closest && e.target.closest('.content-detail-pdf-fullscreen-btn');
+    if (fullscreenBtn && fullscreenBtn.dataset.pdfUrl) {
+      e.preventDefault();
+      window.open(fullscreenBtn.dataset.pdfUrl, '_blank', 'noopener,noreferrer');
+    }
+  }, true);
 
   const backBtn = document.getElementById('contentDetailBack');
   if (backBtn) {

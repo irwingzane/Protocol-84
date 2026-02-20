@@ -1226,7 +1226,51 @@ button.journey-card-clickable {
 }
 
 .content-detail-pdf-block {
-  min-height: 140px;
+  min-height: 100px;
+}
+
+.content-detail-pdf-block h3:empty,
+.content-detail-pdf-block h3[hidden] {
+  display: none;
+}
+
+.content-detail-pdf-preview {
+  width: 100%;
+  min-height: 260px;
+  height: 42vh;
+  max-height: 420px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.5);
+  margin-bottom: 0.6rem;
+}
+
+.content-detail-pdf-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.content-detail-pdf-links {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.content-detail-pdf-fullscreen-btn {
+  margin-right: 0.25rem;
+}
+
+.content-detail-pdf-links a.content-detail-pdf-link-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
 .content-detail-pdf-block.content-detail-pdf-list {
@@ -1486,6 +1530,30 @@ button.journey-card-clickable {
 .library-meta {
   font-size: 0.75rem;
   color: #9ca3af;
+}
+
+.library-card-nutrition {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.library-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.library-card-btn {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.library-card-download {
+  flex-shrink: 0;
 }
 
 .admin-metrics-grid {
