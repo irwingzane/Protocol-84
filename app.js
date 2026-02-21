@@ -169,6 +169,14 @@ const NUTRITION_PDF_URLS = [
   "assets/nutrition-pdfs/Bulking Meals.pdf",
 ];
 
+/** PDF paths for mental health content (same order as mental-health items). Must match exact filenames in assets/mental-health-pdfs/. */
+const MENTAL_HEALTH_PDF_URLS = [
+  "assets/mental-health-pdfs/Five Minute Stress.pdf",
+  "assets/mental-health-pdfs/Daily Mindfulness.pdf",
+  "assets/mental-health-pdfs/Resilience Building Blocks.pdf",
+  "assets/mental-health-pdfs/Habit Stacking.pdf",
+];
+
 function getContentItem(section, index) {
   const items = CONTENT_ITEMS[section];
   if (!items || index < 0 || index >= items.length) return null;
@@ -830,15 +838,21 @@ function renderEmployeeMentalHealth() {
     { category: 'Habits', title: 'Habit stacking', meta: 'Sustainable routines' },
   ];
   grid.innerHTML = items
-    .map(
-      (item, i) => `
-      <article class="library-card library-card-clickable" data-content-section="${escapeAttr(sectionKey)}" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
+    .map((item, i) => {
+      const pdfPath = MENTAL_HEALTH_PDF_URLS[i];
+      const pdfHref = pdfPath ? encodeURI(pdfPath) : '#';
+      return `
+      <article class="library-card library-card-clickable library-card-mental-health" data-content-section="${escapeAttr(sectionKey)}" data-content-index="${i}" data-content-title="${escapeAttr(item.title)}" data-content-meta="${escapeAttr(item.meta)}">
         <div class="library-category">${item.category}</div>
         <div class="library-title">${item.title}</div>
         <div class="library-meta">${item.meta}</div>
+        <div class="library-card-actions">
+          <button type="button" class="btn btn-sm btn-ghost library-card-btn library-card-btn-read">Read</button>
+          <a href="${pdfHref}" class="btn btn-sm btn-primary library-card-btn library-card-download" download target="_blank" rel="noopener noreferrer">Download</a>
+        </div>
       </article>
-    `
-    )
+    `;
+    })
     .join('');
 }
 
@@ -1035,14 +1049,21 @@ function renderContentDetail() {
   if (titleEl) titleEl.textContent = title || 'Content';
   if (subtitleEl) subtitleEl.textContent = meta || '';
 
+  const idx = Number(index);
   let content = getContentDetail(section, index);
-  if (section === 'nutrition' && (!content || !content.pdfUrl) && NUTRITION_PDF_URLS[index] != null) {
-    content = { ...(content || {}), pdfUrl: NUTRITION_PDF_URLS[index] };
+  if (section === 'nutrition' && (!content || !content.pdfUrl) && NUTRITION_PDF_URLS[idx] != null) {
+    content = { ...(content || {}), pdfUrl: NUTRITION_PDF_URLS[idx] };
   }
-  const isPastIssues = section === 'newsletter' && index === 1;
+  if (section === 'mental-health' && (!content || !content.pdfUrl) && MENTAL_HEALTH_PDF_URLS[idx] != null) {
+    content = { ...(content || {}), pdfUrl: MENTAL_HEALTH_PDF_URLS[idx] };
+  }
+  const isPastIssues = section === 'newsletter' && idx === 1;
 
   if (videoBlock) videoBlock.hidden = isPastIssues;
-  if (pdfBlock) pdfBlock.classList.toggle('content-detail-pdf-list', isPastIssues);
+  if (pdfBlock) {
+    pdfBlock.classList.toggle('content-detail-pdf-list', isPastIssues);
+    pdfBlock.hidden = false;
+  }
   if (pdfHeading) {
     const showPdfPreview = content?.pdfUrl && !isPastIssues;
     pdfHeading.textContent = showPdfPreview ? '' : (isPastIssues ? 'Past issues' : 'Downloadable PDF');
@@ -1096,16 +1117,18 @@ function renderContentDetail() {
         const pdfUrlSafe = escapeHtml(content.pdfUrl);
         const pdfSrc = `${pdfUrlSafe}#view=Fit&page=1&toolbar=1`;
         pdfContainer.innerHTML = `
-          <div class="content-detail-pdf-preview">
-            <iframe src="${pdfSrc}" class="content-detail-pdf-iframe" title="PDF preview" type="application/pdf"></iframe>
+          <div class="content-detail-pdf-preview" role="region" aria-label="PDF preview">
+            <iframe src="${pdfSrc}" class="content-detail-pdf-iframe" title="PDF preview" type="application/pdf" width="100%" height="400"></iframe>
           </div>
           <p class="form-footnote content-detail-pdf-links">
             <button type="button" class="btn btn-primary btn-sm content-detail-pdf-fullscreen-btn" data-pdf-url="${pdfUrlSafe}" aria-label="Open PDF in full screen">Open in full screen</button>
             <a href="${pdfUrlSafe}" class="btn btn-primary btn-sm content-detail-pdf-link-btn" download target="_blank" rel="noopener noreferrer">Download</a>
           </p>
         `;
+        pdfContainer.classList.add('content-detail-pdf-has-preview');
       } else {
         pdfContainer.innerHTML = '<p class="week-detail-placeholder">PDF will be available when added.</p>';
+        pdfContainer.classList.remove('content-detail-pdf-has-preview');
       }
     }
   }

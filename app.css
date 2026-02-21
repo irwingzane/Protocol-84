@@ -1289,6 +1289,10 @@ button.journey-card-clickable {
   min-height: 260px;
 }
 
+.content-detail-pdf-area.content-detail-pdf-has-preview {
+  min-height: 380px;
+}
+
 .content-detail-pdf-list-items {
   list-style: none;
   margin: 0;
@@ -1540,7 +1544,8 @@ button.journey-card-clickable {
   color: #9ca3af;
 }
 
-.library-card-nutrition {
+.library-card-nutrition,
+.library-card-mental-health {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

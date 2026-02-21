@@ -126,8 +126,14 @@ const server = http.createServer(async (req, res) => {
     res.end();
     return;
   }
-  const root = path.join(__dirname, '..');
-  const file = path.join(root, url.split('?')[0]);
+  const root = path.resolve(path.join(__dirname, '..'));
+  let pathname = url.split('?')[0];
+  try {
+    pathname = decodeURIComponent(pathname);
+  } catch (_) {
+    pathname = url.split('?')[0];
+  }
+  const file = path.resolve(path.join(root, pathname.replace(/^\/+/, '')));
   if (!file.startsWith(root)) {
     res.writeHead(403);
     res.end();
