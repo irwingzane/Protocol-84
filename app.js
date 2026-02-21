@@ -913,6 +913,81 @@ function openContentDetail(section, index, title, meta) {
   renderContentDetail();
 }
 
+function initStressGameInContainer(container) {
+  if (!container) return;
+  const circle = container.querySelector('.stress-game-circle');
+  const promptText = container.querySelector('.stress-game-prompt-text');
+  const dotsEl = container.querySelector('.stress-game-dots');
+  const startBtn = container.querySelector('.stress-game-start');
+  if (!circle || !promptText || !startBtn) return;
+  const SEC = 4;
+  const CYCLES = 3;
+  let phase = 0;
+  let cycle = 0;
+  let t = null;
+  let dotsInterval = null;
+  function updateDots() {
+    if (!dotsEl) return;
+    const n = (dotsEl.getAttribute('data-d') || '0').replace(/\D/g, '') || '0';
+    const next = (parseInt(n, 10) + 1) % 4;
+    dotsEl.setAttribute('data-d', String(next));
+    dotsEl.textContent = next === 0 ? '' : '.'.repeat(next);
+  }
+  function startDots() {
+    if (dotsInterval) clearInterval(dotsInterval);
+    if (dotsEl) { dotsEl.setAttribute('data-d', '0'); dotsEl.textContent = ''; }
+    dotsInterval = setInterval(updateDots, 400);
+  }
+  function stopDots() {
+    if (dotsInterval) clearInterval(dotsInterval);
+    dotsInterval = null;
+    if (dotsEl) dotsEl.textContent = '';
+  }
+  function stop() {
+    if (t) clearTimeout(t);
+    t = null;
+    stopDots();
+    startBtn.disabled = false;
+    startBtn.textContent = 'Start again';
+    circle.style.transform = 'scale(0.75)';
+    promptText.textContent = 'Done. You should feel calmer.';
+  }
+  function run() {
+    const phases = [
+      { name: 'Breathe in', scale: '1.3', next: SEC * 1000 },
+      { name: 'Hold', scale: '1.3', next: SEC * 1000 },
+      { name: 'Breathe out', scale: '0.75', next: SEC * 1000 },
+      { name: 'Hold', scale: '0.75', next: SEC * 1000 },
+    ];
+    const p = phases[phase];
+    promptText.textContent = p.name;
+    circle.style.transform = 'scale(' + p.scale + ')';
+    if (phase === 3) {
+      cycle++;
+      if (cycle >= CYCLES) { stop(); return; }
+    }
+    phase = (phase + 1) % 4;
+    t = setTimeout(run, p.next);
+  }
+  startBtn.onclick = function () {
+    if (t != null) {
+      stop();
+      return;
+    }
+    startBtn.textContent = 'Stop';
+    phase = 0;
+    cycle = 0;
+    promptText.textContent = 'Get ready';
+    startDots();
+    circle.style.transform = 'scale(0.75)';
+    t = setTimeout(function () {
+      promptText.textContent = 'Breathe in';
+      circle.style.transform = 'scale(1.3)';
+      t = setTimeout(run, SEC * 1000);
+    }, 600);
+  };
+}
+
 function renderContentDetail() {
   const fromHash = getContentFromHash();
   if (fromHash) {
@@ -983,7 +1058,17 @@ function renderContentDetail() {
         </video>
       `;
     } else {
-      videoContainer.innerHTML = '<p class="week-detail-placeholder">Video will appear here when added.</p>';
+      videoContainer.innerHTML = `
+        <div class="stress-game-wrap" style="text-align:center;padding:0.5rem 0;">
+          <p style="font-size:0.88rem;color:#9ca3af;margin:0 0 0.75rem;">Box breathing — follow the circle with your breath.</p>
+          <div style="display:flex;justify-content:center;align-items:center;min-height:140px;margin-bottom:0.75rem;">
+            <div class="stress-game-circle" style="width:100px;height:100px;border-radius:50%;border:3px solid rgba(139,92,246,0.5);background:rgba(139,92,246,0.12);transition:transform 0.4s ease-in-out;transform:scale(0.75);"></div>
+          </div>
+          <p class="stress-game-prompt" style="font-size:1rem;font-weight:500;color:#e5e7eb;margin:0 0 0.75rem;"><span class="stress-game-prompt-text">Tap Start</span><span class="stress-game-dots"></span></p>
+          <button type="button" class="btn btn-primary btn-sm stress-game-start">Start</button>
+        </div>
+      `;
+      initStressGameInContainer(videoContainer);
     }
   }
 
