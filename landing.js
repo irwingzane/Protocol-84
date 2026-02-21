@@ -118,10 +118,15 @@ if (demoForm && statusEl) {
         statusEl.textContent = 'Thanks. Your request has been sent and we’ll get back to you soon.';
       } else {
         const data = await res.json().catch(() => ({}));
-        statusEl.textContent = data.error || 'Something went wrong. Please try again or email irwingzane@gmail.com.';
+        statusEl.textContent = data.error || 'Something went wrong. Sending via form instead…';
+        // Fallback: programmatic submit (no submit event) so Formspree still receives it
+        demoForm.submit();
+        return;
       }
     } catch (err) {
-      statusEl.textContent = 'Unable to send. Check your connection or email irwingzane@gmail.com directly.';
+      statusEl.textContent = 'Sending via form…';
+      demoForm.submit();
+      return;
     }
 
     if (submitBtn) {

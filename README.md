@@ -97,6 +97,15 @@ Inside the employee dashboard:
 
 All data is **local to the current browser** and resettable by clearing site data or `localStorage`.
 
+## Protocol AI chat
+
+The employee dashboard includes a **Protocol** AI assistant (Google Gemini). It works on **Live Server** and on **www.protocol84.com** without any manual API URL:
+
+- **On the website (www.protocol84.com):** The app calls `/api/protocol-chat` on the same host. Your deployment must include the `api/` folder (serverless function) and have **GEMINI_API_KEY** set in the environment.
+- **On Live Server (localhost):** The app automatically uses `https://www.protocol84.com/api/protocol-chat`, so the same deployed API is used.
+
+**To make chat work on the live site:** Deploy this repo to a host that supports serverless (e.g. **Vercel**). Add **GEMINI_API_KEY** in the project’s environment variables. The `api/` folder is deployed as `/api/protocol-chat`. Get a free key at [Google AI Studio](https://aistudio.google.com/apikey).
+
 ## Customising for your brand
 
 - Replace the Protocol84 name or Zane Irwing founder reference in `index.html`, `app.html`, and copy sections if you want to rebrand.

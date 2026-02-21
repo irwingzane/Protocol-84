@@ -403,8 +403,13 @@
                     <p class="section-subtitle">Ask any question about fitness, nutrition, or tailoring your programme to your lifestyle. AI integration coming soon.</p>
                   </div>
                 </header>
-                <div class="protocol-ai-placeholder" aria-label="Protocol AI chat area">
-                  <p class="protocol-ai-placeholder-text">AI chat will appear here once integrated.</p>
+                <div class="protocol-ai-placeholder protocol-chat" id="protocolChat" aria-label="Protocol AI chat area">
+                  <div class="protocol-messages" id="protocolMessages"></div>
+                  <form class="protocol-input-form" id="protocolForm">
+                    <input type="text" class="protocol-input" id="protocolInput" placeholder="Ask about the programme, nutrition, training, pricing…" autocomplete="off" aria-label="Message" />
+                    <button type="submit" class="btn btn-primary protocol-send" id="protocolSend" aria-label="Send">Send</button>
+                  </form>
+                  <p class="protocol-footnote" id="protocolFootnote">Powered by Google Gemini.</p>
                 </div>
               </section>
             </div>

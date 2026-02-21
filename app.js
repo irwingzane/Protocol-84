@@ -1632,6 +1632,76 @@ function initScrollReveal() {
   elements.forEach((el) => observer.observe(el));
 }
 
+// Protocol AI: chat API base URL. Empty = same origin. When on Live Server we use your live site so both work.
+(function () {
+  const host = typeof window !== 'undefined' && window.location && window.location.hostname;
+  const isLocal = host === 'localhost' || host === '127.0.0.1';
+  window.PROTOCOL_CHAT_API_URL = isLocal ? 'https://www.protocol84.com' : '';
+})();
+
+let protocolChatHistory = [];
+
+function initProtocolChat() {
+  const container = document.getElementById('protocolChat');
+  const messagesEl = document.getElementById('protocolMessages');
+  const form = document.getElementById('protocolForm');
+  const input = document.getElementById('protocolInput');
+  const sendBtn = document.getElementById('protocolSend');
+  const footnote = document.getElementById('protocolFootnote');
+  if (!container || !messagesEl || !form || !input) return;
+
+  if (footnote) footnote.textContent = '';
+
+  function addMessage(role, text) {
+    const div = document.createElement('div');
+    div.className = 'protocol-msg protocol-msg-' + role;
+    const label = role === 'user' ? 'You' : 'Protocol';
+    div.innerHTML = '<span class="protocol-msg-label">' + escapeHtml(label) + '</span><div class="protocol-msg-body">' + escapeHtml(text).replace(/\n/g, '<br>') + '</div>';
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function setThinking(on) {
+    sendBtn.disabled = on;
+    sendBtn.textContent = on ? '…' : 'Send';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = (input.value || '').trim();
+    if (!text) return;
+    input.value = '';
+    addMessage('user', text);
+    protocolChatHistory.push({ role: 'user', content: text });
+
+    setThinking(true);
+    let reply = '';
+    try {
+      const base = (window.PROTOCOL_CHAT_API_URL || '').replace(/\/$/, '');
+      const res = await fetch(base + '/api/protocol-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ history: protocolChatHistory }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const msg = data.error || res.statusText || res.status + '';
+        throw new Error(res.status === 405 ? 'No chat API on this host. Set PROTOCOL_CHAT_API_URL in app.js to your deployed API URL (deploy the api/ folder to Vercel and add GEMINI_API_KEY there), or run the Node server (server/README).' : msg);
+      }
+      reply = data.reply || 'No response.';
+    } catch (err) {
+      reply = 'Sorry, I couldn’t get a response. Check the console for details.';
+      if (!((err.message || '').toLowerCase().includes('fetch') || err.name === 'TypeError')) reply = 'Sorry, I could not get a response. (' + (err.message || 'Error') + ')';
+      else reply = 'Sorry, the chat API could not be reached. Check your connection and that the API is deployed (e.g. www.protocol84.com has the api/ and GEMINI_API_KEY set).';
+    }
+    protocolChatHistory.push({ role: 'assistant', content: reply });
+    addMessage('assistant', reply);
+    setThinking(false);
+  });
+
+  addMessage('assistant', 'Hi, I’m Protocol. Ask me anything about the programme, training, nutrition, pricing, or how to get started.');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initThemeToggle();
@@ -1643,6 +1713,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavListeners();
   initWeekDetail();
   initContentDetail();
+  initProtocolChat();
   initScrollReveal();
   restoreSession();
 });
