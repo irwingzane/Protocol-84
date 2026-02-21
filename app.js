@@ -1057,7 +1057,7 @@ function renderContentDetail() {
           Your browser does not support the video tag.
         </video>
       `;
-    } else {
+    } else if (section === 'mental-health' && index === 0) {
       videoContainer.innerHTML = `
         <div class="stress-game-wrap" style="text-align:center;padding:0.5rem 0;">
           <p style="font-size:0.88rem;color:#9ca3af;margin:0 0 0.75rem;">Box breathing — follow the circle with your breath.</p>
@@ -1069,6 +1069,8 @@ function renderContentDetail() {
         </div>
       `;
       initStressGameInContainer(videoContainer);
+    } else {
+      videoContainer.innerHTML = '<p class="week-detail-placeholder">Video will appear here when added.</p>';
     }
   }
 

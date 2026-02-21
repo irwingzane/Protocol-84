@@ -72,27 +72,62 @@ if (yearSpan) {
 
 const demoForm = document.getElementById('demoForm');
 const statusEl = document.getElementById('demoFormStatus');
+const FORMSPREE_FORM_ID = 'xaqdpnaq';
 
 if (demoForm && statusEl) {
-  demoForm.addEventListener('submit', (event) => {
+  demoForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    const dateInput = document.getElementById('preferredDate');
+    const timeInput = document.getElementById('preferredTime');
+    const hiddenDateTime = document.getElementById('preferredDateTime');
+    if (hiddenDateTime && dateInput && timeInput) {
+      const d = dateInput.value.trim();
+      const t = timeInput.value.trim();
+      hiddenDateTime.value = (d && t) ? d + 'T' + t : (d || t);
+    }
+
+    const submitBtn = demoForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn ? submitBtn.textContent : 'Send';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+    }
+    statusEl.textContent = '';
 
     const formData = new FormData(demoForm);
     const payload = Object.fromEntries(formData.entries());
-
-    try {
-      const existing = JSON.parse(localStorage.getItem('demoRequests') || '[]');
-      existing.push({
-        ...payload,
-        timestamp: new Date().toISOString(),
-      });
-      localStorage.setItem('demoRequests', JSON.stringify(existing));
-    } catch {
-      // ignore storage issues in this simple MVP
+    const preferredDateTime = (payload.preferredDateTime || '').toString().trim();
+    if (preferredDateTime) {
+      try {
+        formData.set('preferredDateTime', new Date(preferredDateTime).toLocaleString());
+      } catch {
+        formData.set('preferredDateTime', preferredDateTime);
+      }
     }
 
-    demoForm.reset();
-    statusEl.textContent = 'Thank you. Your demo request has been recorded for follow-up.';
+    try {
+      const res = await fetch('https://formspree.io/f/' + FORMSPREE_FORM_ID, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (res.ok) {
+        demoForm.reset();
+        statusEl.textContent = 'Thanks. Your request has been sent and we’ll get back to you soon.';
+      } else {
+        const data = await res.json().catch(() => ({}));
+        statusEl.textContent = data.error || 'Something went wrong. Please try again or email irwingzane@gmail.com.';
+      }
+    } catch (err) {
+      statusEl.textContent = 'Unable to send. Check your connection or email irwingzane@gmail.com directly.';
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
   });
 }
 

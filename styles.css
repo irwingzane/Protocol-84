@@ -1173,6 +1173,47 @@ textarea {
   gap: 0.9rem;
 }
 
+.datetime-selector {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(209, 213, 219, 0.95);
+  background: #f9fafb;
+}
+
+.datetime-selector-field {
+  flex: 1;
+  min-width: 120px;
+}
+
+.datetime-selector-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.datetime-selector-input {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(209, 213, 219, 0.9);
+  background: #ffffff;
+  outline: none;
+}
+
+.datetime-selector-input:focus {
+  border-color: var(--color-logo-blue);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.35);
+}
+
 .form-row label {
   display: block;
   font-size: 0.8rem;

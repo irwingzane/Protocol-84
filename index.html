@@ -522,7 +522,21 @@
                 <textarea id="message" name="message" rows="4"></textarea>
               </div>
               <div class="form-row">
-                <button type="button" class="btn btn-primary btn-full" disabled>🔒 Coming soon</button>
+                <label>Preferred date &amp; time for call</label>
+                <div class="datetime-selector">
+                  <div class="datetime-selector-field">
+                    <label for="preferredDate" class="datetime-selector-label">Date</label>
+                    <input id="preferredDate" type="date" class="datetime-selector-input" />
+                  </div>
+                  <div class="datetime-selector-field">
+                    <label for="preferredTime" class="datetime-selector-label">Time</label>
+                    <input id="preferredTime" type="time" class="datetime-selector-input" />
+                  </div>
+                  <input id="preferredDateTime" name="preferredDateTime" type="hidden" />
+                </div>
+              </div>
+              <div class="form-row">
+                <button type="submit" class="btn btn-primary btn-full">Send</button>
               </div>
               <p class="form-footnote" id="demoFormStatus"></p>
             </form>
